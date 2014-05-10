@@ -1,0 +1,22 @@
+# Eclipse project data
+.settings
+.classpath
+.project
+
+# SVN metadata
+.svn
+
+# Maven binaries
+bin/
+target/
+
+# Visual Studio local files and databases
+*.sdf
+*.suo
+*.user
+
+# Visual Studio output folders
+Debug/
+Release/
+x64/
+ipch/
