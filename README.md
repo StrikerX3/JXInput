@@ -1,5 +1,5 @@
-JXInputDevice
-=============
+JXInput
+=======
 
 Access XInput devices with Java code.
 
