@@ -11,6 +11,7 @@ bin/
 target/
 
 # Visual Studio local files and databases
+*.opensdf
 *.sdf
 *.suo
 *.user
