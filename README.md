@@ -113,5 +113,8 @@ Usage:
                 // the given axis has changed to value by delta
             }
         };
+        
+        // whenever the device is polled, listener events will be fired as long as there are changes
+        device.poll();
 
 Released under the [MIT License](http://opensource.org/licenses/MIT).
