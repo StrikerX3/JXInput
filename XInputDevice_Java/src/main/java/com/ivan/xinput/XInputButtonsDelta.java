@@ -6,11 +6,11 @@ package com.ivan.xinput;
  * 
  * @author Ivan "StrikerX3" Oliveira
  */
-public class Xbox360ButtonsDelta {
-	private final Xbox360Buttons lastButtons;
-	private final Xbox360Buttons buttons;
+public class XInputButtonsDelta {
+	private final XInputButtons lastButtons;
+	private final XInputButtons buttons;
 
-	protected Xbox360ButtonsDelta(final Xbox360Buttons lastButtons, final Xbox360Buttons buttons) {
+	protected XInputButtonsDelta(final XInputButtons lastButtons, final XInputButtons buttons) {
 		this.lastButtons = lastButtons;
 		this.buttons = buttons;
 	}
@@ -21,7 +21,7 @@ public class Xbox360ButtonsDelta {
 	 * @param button the button
 	 * @return <code>true</code> if the button was pressed, <code>false</code> otherwise
 	 */
-	public boolean isPressed(final Xbox360Button button) {
+	public boolean isPressed(final XInputButton button) {
 		return delta(lastButtons, buttons, button);
 	}
 
@@ -31,7 +31,7 @@ public class Xbox360ButtonsDelta {
 	 * @param button the button
 	 * @return <code>true</code> if the button was released, <code>false</code> otherwise
 	 */
-	public boolean isReleased(final Xbox360Button button) {
+	public boolean isReleased(final XInputButton button) {
 		return delta(buttons, lastButtons, button);
 	}
 
@@ -43,7 +43,7 @@ public class Xbox360ButtonsDelta {
 	 * @param button the button
 	 * @return <code>true</code> if there was a change, <code>false</code> otherwise
 	 */
-	private boolean delta(final Xbox360Buttons from, final Xbox360Buttons to, final Xbox360Button button) {
+	private boolean delta(final XInputButtons from, final XInputButtons to, final XInputButton button) {
 		switch (button) {
 			case a:
 				return !from.a && to.a;

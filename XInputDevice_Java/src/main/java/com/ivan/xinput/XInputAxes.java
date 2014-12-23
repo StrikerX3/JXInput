@@ -1,11 +1,11 @@
 package com.ivan.xinput;
 
 /**
- * Contains the states of all Xbox 360 axes.
+ * Contains the states of all XInput axes.
  * 
  * @author Ivan "StrikerX3" Oliveira
  */
-public class Xbox360Axes {
+public class XInputAxes {
 	public float lx, ly;
 	public float rx, ry;
 
@@ -23,7 +23,7 @@ public class Xbox360Axes {
 	public static final int DPAD_DOWN_LEFT = 6;
 	public static final int DPAD_LEFT = 7;
 
-	protected Xbox360Axes() {
+	protected XInputAxes() {
 		reset();
 	}
 
@@ -33,7 +33,7 @@ public class Xbox360Axes {
 	 * @param axis the axis
 	 * @return the value of the axis
 	 */
-	public float get(final Xbox360Axis axis) {
+	public float get(final XInputAxis axis) {
 		switch (axis) {
 			case leftThumbX:
 				return lx;
@@ -71,7 +71,7 @@ public class Xbox360Axes {
 	 * 
 	 * @param buttons the state to copy from
 	 */
-	protected void copy(final Xbox360Axes axes) {
+	protected void copy(final XInputAxes axes) {
 		lx = axes.lx;
 		ly = axes.ly;
 

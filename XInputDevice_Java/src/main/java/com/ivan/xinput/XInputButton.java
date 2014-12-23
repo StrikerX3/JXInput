@@ -1,11 +1,11 @@
 package com.ivan.xinput;
 
 /**
- * Enumerates all Xbox 360 buttons.
+ * Enumerates all XInput buttons.
  * 
  * @author Ivan "StrikerX3" Oliveira
  */
-public enum Xbox360Button {
+public enum XInputButton {
 	a, b, x, y,
 	back, start,
 	lShoulder, rShoulder,

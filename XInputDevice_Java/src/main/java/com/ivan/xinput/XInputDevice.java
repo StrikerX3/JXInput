@@ -13,15 +13,15 @@ import java.util.List;
  * Use the {@link #getAllDevices()} or {@link #getDeviceFor(int)} methods to start using the devices.
  *
  * @author Ivan "StrikerX3" Oliveira
- * @see Xbox360Components
- * @see Xbox360ComponentsDelta
+ * @see XInputComponents
+ * @see XInputComponentsDelta
  */
 public class XInputDevice {
     private final int playerNum;
     private final ByteBuffer buffer; // Contains the XINPUT_STATE struct
-    private final Xbox360Components lastComponents;
-    private final Xbox360Components components;
-    private final Xbox360ComponentsDelta delta;
+    private final XInputComponents lastComponents;
+    private final XInputComponents components;
+    private final XInputComponentsDelta delta;
 
     public static final int MAX_PLAYERS = 4;
 
@@ -80,9 +80,9 @@ public class XInputDevice {
         buffer = ByteBuffer.allocateDirect(16); // sizeof(XINPUT_STATE)
         buffer.order(ByteOrder.nativeOrder());
 
-        lastComponents = new Xbox360Components();
-        components = new Xbox360Components();
-        delta = new Xbox360ComponentsDelta(lastComponents, components);
+        lastComponents = new XInputComponents();
+        components = new XInputComponents();
+        delta = new XInputComponentsDelta(lastComponents, components);
 
         listeners = new LinkedList<XInputDeviceListener>();
 
@@ -180,16 +180,16 @@ public class XInputDevice {
         final boolean left = (btns & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
         final boolean right = (btns & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
 
-        final Xbox360Axes axes = components.getAxes();
+        final XInputAxes axes = components.getAxes();
         axes.lx = thumbLX / 32768f;
         axes.ly = thumbLY / 32768f;
         axes.rx = thumbRX / 32768f;
         axes.ry = thumbRY / 32768f;
         axes.lt = (leftTrigger & 0xff) / 255f;
         axes.rt = (rightTrigger & 0xff) / 255f;
-        axes.dpad = Xbox360Axes.dpadFromButtons(up, down, left, right);
+        axes.dpad = XInputAxes.dpadFromButtons(up, down, left, right);
 
-        final Xbox360Buttons buttons = components.getButtons();
+        final XInputButtons buttons = components.getButtons();
         buttons.a = (btns & XINPUT_GAMEPAD_A) != 0;
         buttons.b = (btns & XINPUT_GAMEPAD_B) != 0;
         buttons.x = (btns & XINPUT_GAMEPAD_X) != 0;
@@ -222,17 +222,17 @@ public class XInputDevice {
     }
 
     private void processDelta() {
-        final Xbox360ButtonsDelta buttons = delta.getButtons();
-        final Xbox360AxesDelta axes = delta.getAxes();
+        final XInputButtonsDelta buttons = delta.getButtons();
+        final XInputAxesDelta axes = delta.getAxes();
         for (final XInputDeviceListener listener : listeners) {
-            for (final Xbox360Button button : Xbox360Button.values()) {
+            for (final XInputButton button : XInputButton.values()) {
                 if (buttons.isPressed(button)) {
                     listener.buttonChanged(button, true);
                 } else if (buttons.isReleased(button)) {
                     listener.buttonChanged(button, false);
                 }
             }
-            for (final Xbox360Axis axis : Xbox360Axis.values()) {
+            for (final XInputAxis axis : XInputAxis.values()) {
                 final float delta = axes.getDelta(axis);
                 if (delta != 0f) {
                     listener.axisChanged(axis, components.getAxes().get(axis), delta);
@@ -257,7 +257,7 @@ public class XInputDevice {
      *
      * @return the state of the Xbox 360 controller components before the last poll.
      */
-    public Xbox360Components getLastComponents() {
+    public XInputComponents getLastComponents() {
         return lastComponents;
     }
 
@@ -266,7 +266,7 @@ public class XInputDevice {
      *
      * @return the state of the Xbox 360 controller components at the last poll.
      */
-    public Xbox360Components getComponents() {
+    public XInputComponents getComponents() {
         return components;
     }
 
@@ -275,7 +275,7 @@ public class XInputDevice {
      *
      * @return the difference between the last two states of the Xbox 360 controller components.
      */
-    public Xbox360ComponentsDelta getDelta() {
+    public XInputComponentsDelta getDelta() {
         return delta;
     }
 

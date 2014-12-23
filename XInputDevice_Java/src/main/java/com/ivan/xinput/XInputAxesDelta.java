@@ -5,11 +5,11 @@ package com.ivan.xinput;
  * 
  * @author Ivan "StrikerX3" Oliveira
  */
-public class Xbox360AxesDelta {
-	private final Xbox360Axes lastAxes;
-	private final Xbox360Axes axes;
+public class XInputAxesDelta {
+	private final XInputAxes lastAxes;
+	private final XInputAxes axes;
 
-	protected Xbox360AxesDelta(final Xbox360Axes lastAxes, final Xbox360Axes axes) {
+	protected XInputAxesDelta(final XInputAxes lastAxes, final XInputAxes axes) {
 		this.lastAxes = lastAxes;
 		this.axes = axes;
 	}
@@ -81,7 +81,7 @@ public class Xbox360AxesDelta {
 	 * @param axis the axis the get the delta from
 	 * @return the delta for the specified axis
 	 */
-	public float getDelta(final Xbox360Axis axis) {
+	public float getDelta(final XInputAxis axis) {
 		switch (axis) {
 			case leftThumbX:
 				return getRXDelta();

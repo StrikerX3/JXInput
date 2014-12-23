@@ -1,18 +1,18 @@
 package com.ivan.xinput;
 
 /**
- * Contains the states of all Xbox 360 buttons.
+ * Contains the states of all XInput buttons.
  * 
  * @author Ivan "StrikerX3" Oliveira
  */
-public class Xbox360Buttons {
+public class XInputButtons {
 	public boolean a, b, x, y;
 	public boolean back, start;
 	public boolean lShoulder, rShoulder;
 	public boolean lThumb, rThumb;
 	public boolean up, down, left, right;
 
-	protected Xbox360Buttons() {
+	protected XInputButtons() {
 		reset();
 	}
 
@@ -32,7 +32,7 @@ public class Xbox360Buttons {
 	 * 
 	 * @param buttons the state to copy from
 	 */
-	protected void copy(final Xbox360Buttons buttons) {
+	protected void copy(final XInputButtons buttons) {
 		a = buttons.a;
 		b = buttons.b;
 		x = buttons.x;
