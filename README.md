@@ -20,7 +20,7 @@ Usage:
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>xinput-device</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
         </dependency>
 
 3.  There is no need to extract or copy the native libraries from the VS project. The natives are included in the jar file and are extracted and loaded at runtime automatically.
@@ -41,10 +41,10 @@ Usage:
         // will return false if the device is not connected
         if (device.poll()) {
             // retrieve the components
-            Xbox360Components components = device.getComponents();
+            XInputComponents components = device.getComponents();
             
-            Xbox360Buttons buttons = components.getButtons();
-            Xbox360Axes axes = components.getAxes();
+            XInputButtons buttons = components.getButtons();
+            XInputAxes axes = components.getAxes();
             
             // buttons and axes have public fields
             
@@ -73,23 +73,23 @@ Usage:
         XInputDevice device = ...;
         if (device.poll()) {
             // retrieve the delta
-            Xbox360ComponentsDelta delta = device.getDelta();
+            XInputComponentsDelta delta = device.getDelta();
             
-            Xbox360ButtonsDelta buttons = delta.getButtons();
-            Xbox360AxesDelta axes = delta.getAxes();
+            XInputButtonsDelta buttons = delta.getButtons();
+            XInputAxesDelta axes = delta.getAxes();
             
             // retrieve button state change
-            if (buttons.isPressed(Xbox360Button.a)) {
+            if (buttons.isPressed(XInputButton.a)) {
                 // button A was just pressed
-            } else if (buttons.isReleased(Xbox360Button.a)) {
+            } else if (buttons.isReleased(XInputButton.a)) {
                 // button A was just released
             }
             
             // retrieve axis state change
             // the class provides methods for each axis
-            // and a method for providing an Xbox360Axis
+            // and a method for providing an XInputAxis
             float accelerationDelta = axes.getRTDelta();
-            float brakeDelta = axes.getDelta(Xbox360Axis.leftTrigger);
+            float brakeDelta = axes.getDelta(XInputAxis.leftTrigger);
         } else {
             // controller is not connected; display a message
         }
@@ -112,12 +112,12 @@ Usage:
             }
             
             @Override
-            public void buttonChanged(final Xbox360Button button, final boolean pressed) {
+            public void buttonChanged(final XInputButton button, final boolean pressed) {
                 // the given button was just pressed (if pressed == true) or released (pressed == false)
             }
             
             @Override
-            public void axisChanged(final Xbox360Axis axis, final float value, final float delta) {
+            public void axisChanged(final XInputAxis axis, final float value, final float delta) {
                 // the given axis has changed to value by delta
             }
         };
