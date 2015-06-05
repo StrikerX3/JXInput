@@ -45,5 +45,5 @@ public final class XInputNatives {
     public static native int pollDevice(int playerNum, ByteBuffer data);
 
     // https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputsetstate(v=vs.85).aspx
-    public static native int setVibration(int playerNum, short leftMotor, short rightMotor);
+    public static native int setVibration(int playerNum, int leftMotor, int rightMotor);
 }

@@ -21,11 +21,11 @@ JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_pollDevice
 }
 
 JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_setVibration
-  (JNIEnv *env, jclass cls, jint playerNum, jshort leftMotor, jshort rightMotor)
+  (JNIEnv *env, jclass cls, jint playerNum, jint leftMotor, jint rightMotor)
 {
 	XINPUT_VIBRATION vib;
-	vib.wLeftMotorSpeed = leftMotor;
-	vib.wRightMotorSpeed = rightMotor;
+	vib.wLeftMotorSpeed = leftMotor & 0xFFFF;
+	vib.wRightMotorSpeed = rightMotor & 0xFFFF;
 
 	return XInputSetState(playerNum, &vib);
 }

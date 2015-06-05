@@ -269,11 +269,18 @@ public class XInputDevice {
     /**
      * Sets the vibration of the controller. Returns <code>false</code> if the device was not connected.
      *
-     * @param leftMotor the left motor speed
-     * @param rightMotor the right motor speed
+     * @param leftMotor the left motor speed, from 0 to 65535
+     * @param rightMotor the right motor speed, from 0 to 65535
      * @return <code>false</code> if the device was not connected
+     * @throws IllegalArgumentException if either motor speed values lie out of the range 0..65535
      */
-    public boolean setVibration(final short leftMotor, final short rightMotor) {
+    public boolean setVibration(final int leftMotor, final int rightMotor) {
+        if (leftMotor < 0 || leftMotor > 65535) {
+            throw new IllegalArgumentException("Left motor speed out of range (0..65535): " + leftMotor);
+        }
+        if (rightMotor < 0 || rightMotor > 65535) {
+            throw new IllegalArgumentException("Right motor speed out of range (0..65535): " + rightMotor);
+        }
         return XInputNatives.setVibration(playerNum, leftMotor, rightMotor) == ERROR_SUCCESS;
     }
 

@@ -18,10 +18,10 @@ JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_pollDevice
 /*
  * Class:     com_ivan_xinput_natives_XInputNatives
  * Method:    setVibration
- * Signature: (ISS)I
+ * Signature: (III)I
  */
 JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_setVibration
-  (JNIEnv *, jclass, jint, jshort, jshort);
+  (JNIEnv *, jclass, jint, jint, jint);
 
 #ifdef __cplusplus
 }

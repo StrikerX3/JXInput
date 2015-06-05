@@ -156,7 +156,7 @@ Usage:
 
 		// retrieves the gamepad battery data
         XInputBatteryInformation gamepadBattInfo = device.getBatteryInformation(XInputBatteryDeviceType.GAMEPAD);
-        System.out.println("Gamepad battery: " + gamepadBattInfo.getType() +", " + gamepadBattInfo.getLevel());
+        System.out.println("Gamepad battery: " + gamepadBattInfo.getType() + ", " + gamepadBattInfo.getLevel());
 
         // check battery level
         if (gamepadBattInfo.getLevel() == XInputBatteryLevel.LOW) {
