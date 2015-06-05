@@ -45,33 +45,33 @@ public class XInputButtonsDelta {
 	 */
 	private boolean delta(final XInputButtons from, final XInputButtons to, final XInputButton button) {
 		switch (button) {
-			case a:
+			case A:
 				return !from.a && to.a;
-			case b:
+			case B:
 				return !from.b && to.b;
-			case x:
+			case X:
 				return !from.x && to.x;
-			case y:
+			case Y:
 				return !from.y && to.y;
-			case back:
+			case BACK:
 				return !from.back && to.back;
-			case start:
+			case START:
 				return !from.start && to.start;
-			case lShoulder:
+			case LEFT_SHOULDER:
 				return !from.lShoulder && to.lShoulder;
-			case rShoulder:
+			case RIGHT_SHOULDER:
 				return !from.rShoulder && to.rShoulder;
-			case lThumb:
+			case LEFT_THUMBSTICK:
 				return !from.lThumb && to.lThumb;
-			case rThumb:
+			case RIGHT_THUMBSTICK:
 				return !from.rThumb && to.rThumb;
-			case up:
+			case DPAD_UP:
 				return !from.up && to.up;
-			case down:
+			case DPAD_DOWN:
 				return !from.down && to.down;
-			case left:
+			case DPAD_LEFT:
 				return !from.left && to.left;
-			case right:
+			case DPAD_RIGHT:
 				return !from.right && to.right;
 		}
 		return false;

@@ -6,8 +6,8 @@ package com.ivan.xinput;
  * @author Ivan "StrikerX3" Oliveira
  */
 public enum XInputAxis {
-    leftThumbX, leftThumbY,
-    rightThumbX, rightThumbY,
-    leftTrigger, rightTrigger,
-    dpad;
+    LEFT_THUMBSTICK_X, LEFT_THUMBSTICK_Y,
+    RIGHT_THUMBSTICK_X, RIGHT_THUMBSTICK_Y,
+    LEFT_TRIGGER, RIGHT_TRIGGER,
+    DPAD;
 }

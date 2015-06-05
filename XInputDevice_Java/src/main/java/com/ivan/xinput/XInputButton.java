@@ -6,9 +6,9 @@ package com.ivan.xinput;
  * @author Ivan "StrikerX3" Oliveira
  */
 public enum XInputButton {
-	a, b, x, y,
-	back, start,
-	lShoulder, rShoulder,
-	lThumb, rThumb,
-	up, down, left, right;
+	A, B, X, Y,
+	BACK, START,
+	LEFT_SHOULDER, RIGHT_SHOULDER,
+	LEFT_THUMBSTICK, RIGHT_THUMBSTICK,
+	DPAD_UP, DPAD_DOWN, DPAD_LEFT, DPAD_RIGHT;
 }

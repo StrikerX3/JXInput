@@ -32,6 +32,7 @@ public class XInputDevice {
 
     private static final XInputDevice[] DEVICES = new XInputDevice[MAX_PLAYERS];
     static {
+        // FIXME this approach is very buggy
         final String arch = System.getProperty("os.arch").contains("64") ? "64" : "32";
         try {
             final File dir = new File("lib/native");
@@ -69,10 +70,6 @@ public class XInputDevice {
         for (int i = 0; i < MAX_PLAYERS; i++) {
             DEVICES[i] = new XInputDevice(i);
         }
-    }
-
-    public static void main(final String[] args) {
-        System.out.println(XInputDevice.getDeviceFor(1).isConnected());
     }
 
     private XInputDevice(final int playerNum) {
@@ -253,27 +250,27 @@ public class XInputDevice {
     }
 
     /**
-     * Returns the state of the Xbox 360 controller components before the last poll.
+     * Returns the state of the XInput controller components before the last poll.
      *
-     * @return the state of the Xbox 360 controller components before the last poll.
+     * @return the state of the XInput controller components before the last poll.
      */
     public XInputComponents getLastComponents() {
         return lastComponents;
     }
 
     /**
-     * Returns the state of the Xbox 360 controller components at the last poll.
+     * Returns the state of the XInput controller components at the last poll.
      *
-     * @return the state of the Xbox 360 controller components at the last poll.
+     * @return the state of the XInput controller components at the last poll.
      */
     public XInputComponents getComponents() {
         return components;
     }
 
     /**
-     * Returns the difference between the last two states of the Xbox 360 controller components.
+     * Returns the difference between the last two states of the XInput controller components.
      *
-     * @return the difference between the last two states of the Xbox 360 controller components.
+     * @return the difference between the last two states of the XInput controller components.
      */
     public XInputComponentsDelta getDelta() {
         return delta;
@@ -301,7 +298,7 @@ public class XInputDevice {
 
     private static native int setVibration(int playerNum, short leftMotor, short rightMotor);
 
-    // Xbox 360 controller button masks
+    // XInput controller button masks
     private static final short XINPUT_GAMEPAD_DPAD_UP = 0x0001;
     private static final short XINPUT_GAMEPAD_DPAD_DOWN = 0x0002;
     private static final short XINPUT_GAMEPAD_DPAD_LEFT = 0x0004;
