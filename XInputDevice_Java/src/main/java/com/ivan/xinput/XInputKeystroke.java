@@ -3,7 +3,7 @@ package com.ivan.xinput;
 import java.nio.ByteBuffer;
 
 import com.ivan.xinput.natives.XInputConstants;
-import com.ivan.xinput.natives.XInputVirtualKeyConstants;
+import com.ivan.xinput.natives.XInputVirtualKeyCodes;
 
 /**
  * Represents a keystroke from an XInput device.
@@ -46,7 +46,7 @@ public class XInputKeystroke {
 
     /**
      * Retrieves the virtual key code.
-     * Virtual key codes are defined in the {@link XInputVirtualKeyConstants} class.
+     * Virtual key codes are defined in the {@link XInputVirtualKeyCodes} class.
      *
      * @return the virtual key code
      */

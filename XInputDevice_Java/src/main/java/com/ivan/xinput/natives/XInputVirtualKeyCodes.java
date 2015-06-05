@@ -5,8 +5,8 @@ package com.ivan.xinput.natives;
  *
  * @author Ivan "StrikerX3" Oliveira
  */
-public final class XInputVirtualKeyConstants {
-    private XInputVirtualKeyConstants() {}
+public final class XInputVirtualKeyCodes {
+    private XInputVirtualKeyCodes() {}
 
     public static final short VK_PAD_A = 0x5800;
     public static final short VK_PAD_B = 0x5801;
