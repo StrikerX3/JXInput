@@ -136,7 +136,19 @@ Usage:
         // whenever the device is polled, listener events will be fired as long as there are changes
         device.poll();
 
-10.  XInput 1.4 specific (UNTESTED!)
+10.  Vibration
+
+		XInputDevice device = ...;
+
+		// vibration speeds from 0 to 65535
+		//   where 0 = no vibration
+		//   and 65535 = maximum vibration
+		int leftMotor = ...;
+		int rightMotor = ...;
+
+		device.setVibration(leftMotor, rightMotor);
+
+11.  XInput 1.4 specific (UNTESTED!)
 
 	a.  Enable or disable the XInput reporting state
 
