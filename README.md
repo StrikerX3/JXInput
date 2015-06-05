@@ -21,7 +21,7 @@ Usage:
         </dependency>
 
 3.  There is no need to extract or copy the native libraries from the VS project. The natives are included in the jar file and are extracted and loaded at runtime automatically under the `lib` folder of the working directory.
-4.  In your Java code, import the `com.ivan.xinput.XInputDevice` class for XInput 1.3 functionality or `com.ivan.xinput.XInputDevice14` for XInput 1.4.
+4.  In your Java code, import the `com.ivan.xinput.XInputDevice` class for XInput 1.3 functionality or `com.ivan.xinput.XInputDevice14` for XInput 1.4. The latter class extends the former so you can use 1.3 methods with the 1.4 class.
 5.  To check if the desired version is available:
 
 		// check if XInput 1.3 is available
