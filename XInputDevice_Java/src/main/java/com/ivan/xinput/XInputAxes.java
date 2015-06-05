@@ -1,5 +1,8 @@
 package com.ivan.xinput;
 
+
+import com.ivan.xinput.enums.XInputAxis;
+
 /**
  * Contains the states of all XInput axes.
  *

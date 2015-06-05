@@ -1,4 +1,7 @@
-package com.ivan.xinput;
+package com.ivan.xinput.listener;
+
+import com.ivan.xinput.enums.XInputAxis;
+import com.ivan.xinput.enums.XInputButton;
 
 /**
  * Provides empty implementations of all {@link XInputDeviceListener} methods for easier subclassing.

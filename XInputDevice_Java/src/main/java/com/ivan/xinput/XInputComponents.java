@@ -16,7 +16,7 @@ public class XInputComponents {
 
     /**
      * Returns the XInput button states.
-     * 
+     *
      * @return the XInput button states
      */
     public XInputButtons getButtons() {
@@ -25,7 +25,7 @@ public class XInputComponents {
 
     /**
      * Returns the XInput axis states.
-     * 
+     *
      * @return the XInput axis states
      */
     public XInputAxes getAxes() {
@@ -42,7 +42,7 @@ public class XInputComponents {
 
     /**
      * Copies the values from the specified components.
-     * 
+     *
      * @param components the components to copy the values from
      */
     protected void copy(final XInputComponents components) {

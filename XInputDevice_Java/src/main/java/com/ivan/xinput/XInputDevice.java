@@ -1,12 +1,33 @@
 package com.ivan.xinput;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import static com.ivan.xinput.natives.XInputConstants.ERROR_DEVICE_NOT_CONNECTED;
+import static com.ivan.xinput.natives.XInputConstants.ERROR_SUCCESS;
+import static com.ivan.xinput.natives.XInputConstants.MAX_PLAYERS;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_A;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_B;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_BACK;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_DOWN;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_LEFT;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_RIGHT;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_UP;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_SHOULDER;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_THUMB;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_SHOULDER;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_THUMB;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_START;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_X;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_Y;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.ivan.xinput.enums.XInputAxis;
+import com.ivan.xinput.enums.XInputButton;
+import com.ivan.xinput.exceptions.XInputNotLoadedException;
+import com.ivan.xinput.listener.XInputDeviceListener;
+import com.ivan.xinput.natives.XInputNatives;
 
 /**
  * Represents all XInput devices registered in the system.
@@ -17,62 +38,32 @@ import java.util.List;
  * @see XInputComponentsDelta
  */
 public class XInputDevice {
-    private final int playerNum;
+    protected final int playerNum;
     private final ByteBuffer buffer; // Contains the XINPUT_STATE struct
     private final XInputComponents lastComponents;
     private final XInputComponents components;
     private final XInputComponentsDelta delta;
-
-    public static final int MAX_PLAYERS = 4;
 
     private boolean lastConnected;
     private boolean connected;
 
     private final List<XInputDeviceListener> listeners;
 
-    private static final XInputDevice[] DEVICES = new XInputDevice[MAX_PLAYERS];
+    private static final XInputDevice[] DEVICES;
     static {
-        // FIXME this approach is very buggy
-        final String arch = System.getProperty("os.arch").contains("64") ? "64" : "32";
-        try {
-            final File dir = new File("lib/native");
-            dir.mkdirs();
-
-            final String libName = "XInputReader-" + arch + ".dll";
-            final File file = new File(dir, libName);
-            try {
-                final InputStream input = XInputDevice.class.getClassLoader().getResourceAsStream("lib/native/" + libName);
-                try {
-                    file.createNewFile();
-
-                    final FileOutputStream fos = new FileOutputStream(file);
-                    try {
-                        final byte[] buf = new byte[65536];
-                        int len;
-                        while ((len = input.read(buf)) > -1) {
-                            fos.write(buf, 0, len);
-                        }
-                    } finally {
-                        fos.close();
-                    }
-                } finally {
-                    input.close();
-                }
-            } catch (final Exception e) {
-                throw new Error("Could not load native libraries", e);
+        XInputDevice[] devices;
+        if (XInputNatives.isLoaded()) {
+            devices = new XInputDevice[MAX_PLAYERS];
+            for (int i = 0; i < MAX_PLAYERS; i++) {
+                devices[i] = new XInputDevice(i);
             }
-
-            System.load(file.getAbsolutePath());
-        } catch (final UnsatisfiedLinkError e) {
-            throw new Error("XInputDevice could not find required library: XInputReader-" + arch, e);
+        } else {
+            devices = null;
         }
-
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            DEVICES[i] = new XInputDevice(i);
-        }
+        DEVICES = devices;
     }
 
-    private XInputDevice(final int playerNum) {
+    protected XInputDevice(final int playerNum) {
         this.playerNum = playerNum;
         buffer = ByteBuffer.allocateDirect(16); // sizeof(XINPUT_STATE)
         buffer.order(ByteOrder.nativeOrder());
@@ -87,11 +78,22 @@ public class XInputDevice {
     }
 
     /**
+     * Determines if the XInput devices are available on this platform.
+     *
+     * @return <code>true</code> if the XInput devices are available, <code>false</code> if not
+     */
+    public static boolean isAvailable() {
+        return DEVICES != null;
+    }
+
+    /**
      * Returns an array containing all registered XInput devices.
      *
      * @return all XInput devices
+     * @throws XInputNotLoadedException if the native library failed to load
      */
-    public static XInputDevice[] getAllDevices() {
+    public static XInputDevice[] getAllDevices() throws XInputNotLoadedException {
+        checkLibraryReady();
         return DEVICES.clone();
     }
 
@@ -100,8 +102,10 @@ public class XInputDevice {
      *
      * @param playerNum the player number
      * @return the XInput device for the specified player
+     * @throws XInputNotLoadedException if the native library failed to load
      */
-    public static XInputDevice getDeviceFor(final int playerNum) {
+    public static XInputDevice getDeviceFor(final int playerNum) throws XInputNotLoadedException {
+        checkLibraryReady();
         if (playerNum < 0 || playerNum >= MAX_PLAYERS) {
             throw new IllegalArgumentException("Invalid player number: " + playerNum + ". Must be between 0 and " + (MAX_PLAYERS - 1));
         }
@@ -129,17 +133,12 @@ public class XInputDevice {
     /**
      * Reads input from the device and updates components.
      *
-     * @return <code>false</code> if the device was not connected
+     * @return <code>false</code> if the device is not connected
+     * @throws IllegalStateException if there is an error trying to read the device state
      */
     public boolean poll() {
-        final int ret = pollDevice(playerNum, buffer);
-        if (ret == ERROR_DEVICE_NOT_CONNECTED) {
-            setConnected(false);
+        if (!checkReturnCode(XInputNatives.pollDevice(playerNum, buffer))) {
             return false;
-        }
-        if (ret != ERROR_SUCCESS) {
-            setConnected(false);
-            throw new Error("Could not read controller state: " + ret);
         }
         setConnected(true);
 
@@ -206,6 +205,35 @@ public class XInputDevice {
         return true;
     }
 
+    protected boolean checkReturnCode(final int ret) {
+        if (ret == ERROR_DEVICE_NOT_CONNECTED) {
+            setConnected(false);
+            return false;
+        }
+        if (ret != ERROR_SUCCESS) {
+            setConnected(false);
+            throw new IllegalStateException("Could not read controller state: 0x" + Integer.toHexString(ret));
+        }
+        return true;
+    }
+
+    protected boolean checkReturnCode(final int ret, final int... validRetCodes) {
+        if (ret == ERROR_DEVICE_NOT_CONNECTED) {
+            setConnected(false);
+            return false;
+        }
+        if (ret != ERROR_SUCCESS) {
+            setConnected(false);
+            for (final int validRet : validRetCodes) {
+                if (ret == validRet) {
+                    return false;
+                }
+            }
+            throw new IllegalStateException("Could not read controller state: 0x" + Integer.toHexString(ret));
+        }
+        return true;
+    }
+
     private void setConnected(final boolean state) {
         lastConnected = connected;
         connected = state;
@@ -246,7 +274,7 @@ public class XInputDevice {
      * @return <code>false</code> if the device was not connected
      */
     public boolean setVibration(final short leftMotor, final short rightMotor) {
-        return setVibration(playerNum, leftMotor, rightMotor) != ERROR_DEVICE_NOT_CONNECTED;
+        return XInputNatives.setVibration(playerNum, leftMotor, rightMotor) == ERROR_SUCCESS;
     }
 
     /**
@@ -294,26 +322,14 @@ public class XInputDevice {
         return playerNum;
     }
 
-    private static native int pollDevice(int playerNum, ByteBuffer data);
-
-    private static native int setVibration(int playerNum, short leftMotor, short rightMotor);
-
-    // XInput controller button masks
-    private static final short XINPUT_GAMEPAD_DPAD_UP = 0x0001;
-    private static final short XINPUT_GAMEPAD_DPAD_DOWN = 0x0002;
-    private static final short XINPUT_GAMEPAD_DPAD_LEFT = 0x0004;
-    private static final short XINPUT_GAMEPAD_DPAD_RIGHT = 0x0008;
-    private static final short XINPUT_GAMEPAD_START = 0x0010;
-    private static final short XINPUT_GAMEPAD_BACK = 0x0020;
-    private static final short XINPUT_GAMEPAD_LEFT_THUMB = 0x0040;
-    private static final short XINPUT_GAMEPAD_RIGHT_THUMB = 0x0080;
-    private static final short XINPUT_GAMEPAD_LEFT_SHOULDER = 0x0100;
-    private static final short XINPUT_GAMEPAD_RIGHT_SHOULDER = 0x0200;
-    private static final short XINPUT_GAMEPAD_A = 0x1000;
-    private static final short XINPUT_GAMEPAD_B = 0x2000;
-    private static final short XINPUT_GAMEPAD_X = 0x4000;
-    private static final short XINPUT_GAMEPAD_Y = (short) 0x8000;
-    // Windows error codes
-    private static final int ERROR_SUCCESS = 0;
-    private static final int ERROR_DEVICE_NOT_CONNECTED = 1167;
+    /**
+     * Checks if the native library is loaded and ready for use.
+     *
+     * @throws XInputNotLoadedException if the native library is not loaded
+     */
+    private static void checkLibraryReady() throws XInputNotLoadedException {
+        if (!XInputNatives.isLoaded()) {
+            throw new XInputNotLoadedException("Native library failed to load", XInputNatives.getLoadError());
+        }
+    }
 }

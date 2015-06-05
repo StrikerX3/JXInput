@@ -1,5 +1,7 @@
 package com.ivan.xinput;
 
+import com.ivan.xinput.enums.XInputButton;
+
 
 /**
  * Represents the delta (change) of the buttons between two successive polls.

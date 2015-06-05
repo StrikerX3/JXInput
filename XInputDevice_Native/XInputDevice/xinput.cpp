@@ -1,11 +1,13 @@
 #define WIN32_LEAN_AND_MEAN     // to avoid including unnecessary stuff
 
-#include "com_ivan_xinput_XInputDevice.h"
+#include "com_ivan_xinput_natives_XInputNatives.h"
 
 #include <Windows.h>
 #include <XInput.h>
 
-JNIEXPORT jint JNICALL Java_com_ivan_xinput_XInputDevice_pollDevice
+#pragma comment(lib, "xinput9_1_0.lib")
+
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_pollDevice
   (JNIEnv *env, jclass cls, jint playerNum, jobject byteBuffer)
 {
 	// the byte buffer must be allocatedDirect(16)'d in Java...
@@ -18,7 +20,7 @@ JNIEXPORT jint JNICALL Java_com_ivan_xinput_XInputDevice_pollDevice
 	return XInputGetState(playerNum, state);
 }
 
-JNIEXPORT jint JNICALL Java_com_ivan_xinput_XInputDevice_setVibration
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_setVibration
   (JNIEnv *env, jclass cls, jint playerNum, jshort leftMotor, jshort rightMotor)
 {
 	XINPUT_VIBRATION vib;

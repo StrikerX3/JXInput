@@ -17,7 +17,7 @@ public class XInputComponentsDelta {
 
     /**
      * Returns the delta of the buttons.
-     * 
+     *
      * @return the delta of the buttons.
      */
     public XInputButtonsDelta getButtons() {
@@ -26,7 +26,7 @@ public class XInputComponentsDelta {
 
     /**
      * Returns the delta of the axes.
-     * 
+     *
      * @return the delta of the axes.
      */
     public XInputAxesDelta getAxes() {

@@ -1,5 +1,8 @@
 package com.ivan.xinput;
 
+
+import com.ivan.xinput.enums.XInputAxis;
+
 /**
  * Represents the delta (change) of the axes between two successive polls.
  *

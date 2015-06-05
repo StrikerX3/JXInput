@@ -1,4 +1,4 @@
-package com.ivan.xinput;
+package com.ivan.xinput.enums;
 
 /**
  * Enumerates all XInput buttons.
