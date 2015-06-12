@@ -17,7 +17,7 @@ Usage:
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>xinput-device</artifactId>
-            <version>0.3</version>
+            <version>0.4</version>
         </dependency>
 
 3.  There is no need to extract or copy the native libraries from the VS project. The natives are included in the jar file and are extracted and loaded at runtime automatically under the `lib` folder of the working directory.
@@ -125,11 +125,6 @@ Usage:
             @Override
             public void buttonChanged(final XInputButton button, final boolean pressed) {
                 // the given button was just pressed (if pressed == true) or released (pressed == false)
-            }
-            
-            @Override
-            public void axisChanged(final XInputAxis axis, final float value, final float delta) {
-                // the given axis has changed to value by delta
             }
         };
         

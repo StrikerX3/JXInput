@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ivan</groupId>
 	<artifactId>xinput-device</artifactId>
-	<version>0.3</version>
+	<version>0.4</version>
 	<name>XInput Device Handler</name>
 	<packaging>jar</packaging>
 

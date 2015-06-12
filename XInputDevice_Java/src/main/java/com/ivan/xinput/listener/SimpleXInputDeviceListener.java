@@ -1,6 +1,5 @@
 package com.ivan.xinput.listener;
 
-import com.ivan.xinput.enums.XInputAxis;
 import com.ivan.xinput.enums.XInputButton;
 
 /**
@@ -19,9 +18,5 @@ public class SimpleXInputDeviceListener implements XInputDeviceListener {
 
     @Override
     public void buttonChanged(final XInputButton button, final boolean pressed) {
-    }
-
-    @Override
-    public void axisChanged(final XInputAxis axis, final float value, final float delta) {
     }
 }

@@ -23,7 +23,6 @@ import java.nio.ByteOrder;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.ivan.xinput.enums.XInputAxis;
 import com.ivan.xinput.enums.XInputButton;
 import com.ivan.xinput.exceptions.XInputNotLoadedException;
 import com.ivan.xinput.listener.XInputDeviceListener;
@@ -248,19 +247,12 @@ public class XInputDevice {
 
     private void processDelta() {
         final XInputButtonsDelta buttons = delta.getButtons();
-        final XInputAxesDelta axes = delta.getAxes();
         for (final XInputDeviceListener listener : listeners) {
             for (final XInputButton button : XInputButton.values()) {
                 if (buttons.isPressed(button)) {
                     listener.buttonChanged(button, true);
                 } else if (buttons.isReleased(button)) {
                     listener.buttonChanged(button, false);
-                }
-            }
-            for (final XInputAxis axis : XInputAxis.values()) {
-                final float delta = axes.getDelta(axis);
-                if (delta != 0f) {
-                    listener.axisChanged(axis, components.getAxes().get(axis), delta);
                 }
             }
         }
