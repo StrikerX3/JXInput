@@ -17,7 +17,7 @@ Usage:
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>xinput-device</artifactId>
-            <version>0.4</version>
+            <version>0.5</version>
         </dependency>
 
 3.  There is no need to extract or copy the native libraries from the VS project. The natives are included in the jar file and are extracted and loaded at runtime automatically under the `lib` folder of the working directory.
