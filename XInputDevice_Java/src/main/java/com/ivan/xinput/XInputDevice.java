@@ -10,11 +10,13 @@ import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_DOWN;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_LEFT;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_RIGHT;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_UP;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_GUIDE_BUTTON;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_SHOULDER;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_THUMB;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_SHOULDER;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_THUMB;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_START;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_UNKNOWN;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_X;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_Y;
 
@@ -38,7 +40,7 @@ import com.ivan.xinput.natives.XInputNatives;
  */
 public class XInputDevice {
     protected final int playerNum;
-    private final ByteBuffer buffer; // Contains the XINPUT_STATE struct
+    private final ByteBuffer buffer;// Contains the XINPUT_STATE struct
     private final XInputComponents lastComponents;
     private final XInputComponents components;
     private final XInputComponentsDelta delta;
@@ -49,6 +51,7 @@ public class XInputDevice {
     private final List<XInputDeviceListener> listeners;
 
     private static final XInputDevice[] DEVICES;
+
     static {
         XInputDevice[] devices;
         if (XInputNatives.isLoaded()) {
@@ -64,7 +67,7 @@ public class XInputDevice {
 
     protected XInputDevice(final int playerNum) {
         this.playerNum = playerNum;
-        buffer = ByteBuffer.allocateDirect(16); // sizeof(XINPUT_STATE)
+        buffer = ByteBuffer.allocateDirect(16);// sizeof(XINPUT_STATE)
         buffer.order(ByteOrder.nativeOrder());
 
         lastComponents = new XInputComponents();
@@ -158,7 +161,7 @@ public class XInputDevice {
         //     SHORT                               sThumbRY;
         // } XINPUT_GAMEPAD, *PXINPUT_GAMEPAD;
 
-        /*int packetNumber = */buffer.getInt(); // can be safely ignored
+        /*int packetNumber = */buffer.getInt();// can be safely ignored
         final short btns = buffer.getShort();
         final byte leftTrigger = buffer.get();
         final byte rightTrigger = buffer.get();
@@ -195,6 +198,8 @@ public class XInputDevice {
         buttons.rShoulder = (btns & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
         buttons.lThumb = (btns & XINPUT_GAMEPAD_LEFT_THUMB) != 0;
         buttons.rThumb = (btns & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
+        buttons.guide = (btns & XINPUT_GAMEPAD_GUIDE_BUTTON) != 0;
+        buttons.unknown = (btns & XINPUT_GAMEPAD_UNKNOWN) != 0;
         buttons.up = up;
         buttons.down = down;
         buttons.left = left;

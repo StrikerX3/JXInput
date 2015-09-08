@@ -7,11 +7,13 @@ import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_DOWN;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_LEFT;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_RIGHT;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_DPAD_UP;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_GUIDE_BUTTON;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_SHOULDER;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_LEFT_THUMB;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_SHOULDER;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_RIGHT_THUMB;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_START;
+import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_UNKNOWN;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_X;
 import static com.ivan.xinput.natives.XInputConstants.XINPUT_GAMEPAD_Y;
 
@@ -93,6 +95,8 @@ public class XInputCapabilities {
         addSupportedButton(buttons, XINPUT_GAMEPAD_RIGHT_SHOULDER, XInputButton.RIGHT_SHOULDER);
         addSupportedButton(buttons, XINPUT_GAMEPAD_LEFT_THUMB, XInputButton.LEFT_THUMBSTICK);
         addSupportedButton(buttons, XINPUT_GAMEPAD_RIGHT_THUMB, XInputButton.RIGHT_THUMBSTICK);
+        addSupportedButton(buttons, XINPUT_GAMEPAD_GUIDE_BUTTON, XInputButton.GUIDE_BUTTON);
+        addSupportedButton(buttons, XINPUT_GAMEPAD_UNKNOWN, XInputButton.UNKNOWN);
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_UP, XInputButton.DPAD_UP);
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_DOWN, XInputButton.DPAD_DOWN);
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_LEFT, XInputButton.DPAD_LEFT);

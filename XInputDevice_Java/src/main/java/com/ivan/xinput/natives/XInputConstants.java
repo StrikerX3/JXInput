@@ -24,6 +24,8 @@ public final class XInputConstants {
     public static final short XINPUT_GAMEPAD_RIGHT_THUMB = 0x0080;
     public static final short XINPUT_GAMEPAD_LEFT_SHOULDER = 0x0100;
     public static final short XINPUT_GAMEPAD_RIGHT_SHOULDER = 0x0200;
+    public static final short XINPUT_GAMEPAD_GUIDE_BUTTON = 0x0400;// undocumented
+    public static final short XINPUT_GAMEPAD_UNKNOWN = 0x0800;// undocumented
     public static final short XINPUT_GAMEPAD_A = 0x1000;
     public static final short XINPUT_GAMEPAD_B = 0x2000;
     public static final short XINPUT_GAMEPAD_X = 0x4000;
@@ -55,11 +57,11 @@ public final class XInputConstants {
     public static final byte XINPUT_CAPS_NO_NAVIGATION = 0x0010;
 
     // Battery types
-    public static final byte BATTERY_TYPE_DISCONNECTED = 0x00;   // This device is not connected
-    public static final byte BATTERY_TYPE_WIRED = 0x01;   // Wired device, no battery
-    public static final byte BATTERY_TYPE_ALKALINE = 0x02;   // Alkaline battery source
-    public static final byte BATTERY_TYPE_NIMH = 0x03;   // Nickel Metal Hydride battery source
-    public static final byte BATTERY_TYPE_UNKNOWN = (byte) 0xFF;   // Cannot determine the battery type
+    public static final byte BATTERY_TYPE_DISCONNECTED = 0x00;// This device is not connected
+    public static final byte BATTERY_TYPE_WIRED = 0x01;// Wired device, no battery
+    public static final byte BATTERY_TYPE_ALKALINE = 0x02;// Alkaline battery source
+    public static final byte BATTERY_TYPE_NIMH = 0x03;// Nickel Metal Hydride battery source
+    public static final byte BATTERY_TYPE_UNKNOWN = (byte) 0xFF;// Cannot determine the battery type
 
     // Battery levels
     public static final byte BATTERY_LEVEL_EMPTY = 0x00;
