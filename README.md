@@ -1,13 +1,13 @@
 JXInput
 =======
 
-Access XInput devices with Java code.
+Java binding for XInput.
 
-Visual Studio 2010 project contains the native code, which is already compiled and included in the Java project. It depends on XInput 1.3, which is used by Direct 9.0c games. XInput 1.4 is also supported through an extended API.
+Visual Studio 2013 solution contains the native code, which is already compiled and included in the Java project. It depends on XInput 1.3, which is used by Direct 9.0c games. XInput 1.4 is also supported through an extended API.
 
 Requirements:
 
-The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) is required to use JXInput. XInput 1.3 support comes out of the box in Windows 7. XInput 1.4 is only supported in Windows 8 or later.
+The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/en-us/download/details.aspx?id=40784) are required to use JXInput. XInput 1.3 support comes out of the box in Windows 7. XInput 1.4 is only supported in Windows 8 or later.
 
 Usage:
 
