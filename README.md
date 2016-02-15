@@ -27,7 +27,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.mic
         ```xml
         <repositories>
            <repository>
-                <id>jitpack.io</id>           <!-- JitPack allows gitgub repos to be used as maven repos -->
+                <id>jitpack.io</id>           <!-- JitPack allows github repo to be used as a maven repo -->
                 <url>https://jitpack.io</url> <!-- For documentation: http://jitpack.io/ -->
             </repository>
         </repositories>
