@@ -225,4 +225,5 @@ The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.mic
 	// use keystroke.getVirtualKey() to get the virtual key code (constants available in XInputVirtualKeyCodes)
 	// use keystroke.getUnicode() to get the Unicode character
     ```
+
 Released under the [MIT License](http://opensource.org/licenses/MIT).
