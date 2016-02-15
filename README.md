@@ -22,13 +22,13 @@ The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.mic
         </dependency>
         ```
 
-* Option 2: Don't Host your own Maven Server.
+* Option 2: Don't Host your own Maven Server by using [JitPack](http://jitpack.io/).
     * Add the following to your `pom.xml`
         ```xml
         <repositories>
            <repository>
                 <id>jitpack.io</id>           <!-- JitPack allows gitgub repos to be used as maven repos -->
-                <url>https://jitpack.io</url> <!-- For documentation: https://jitpack.io/ -->
+                <url>https://jitpack.io</url> <!-- For documentation: http://jitpack.io/ -->
             </repository>
         </repositories>
         
