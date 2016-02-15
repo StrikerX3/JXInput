@@ -11,14 +11,34 @@ The [Visual C++ Redistributable Packages for Visual Studio 2013](https://www.mic
 
 Usage:
 
+Option 1:
+ 
 1.  Install the project into your Maven repository (since it is not available in the Central Maven repository).
 2.  Include the Maven dependency into your project:
+	<dependency>
+		<groupId>com.ivan</groupId>
+		<artifactId>xinput-device</artifactId>
+		<version>0.5</version>
+	</dependency>
 
-        <dependency>
-            <groupId>com.ivan</groupId>
-            <artifactId>xinput-device</artifactId>
-            <version>0.5</version>
-        </dependency>
+Option 2:
+
+1.  Include the Maven dependency into your project:
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>           <!-- JitPack allows gitgub repos to be used as maven repos -->
+			<url>https://jitpack.io</url> <!-- For documentation: https://jitpack.io/ -->
+        	    </repository>
+        </repositories>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.strikerx3</groupId>
+                <artifactId>jxinput</artifactId>
+                <version>e2b6835</version>
+            </dependency>
+        </dependencies>
+<pre></code></pre>
+2. For the sake of step numbers being correct.
 
 3.  There is no need to extract or copy the native libraries from the VS project. The natives are included in the jar file and are extracted and loaded at runtime automatically under the `lib` folder of the working directory.
 4.  In your Java code, import the `com.ivan.xinput.XInputDevice` class for XInput 1.3 functionality or `com.ivan.xinput.XInputDevice14` for XInput 1.4. The latter class extends the former so you can use 1.3 methods with the 1.4 class.
