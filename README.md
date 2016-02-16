@@ -18,7 +18,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>xinput-device</artifactId>
-            <version>0.5</version>
+            <version>0.6</version>
         </dependency>
         ```
 
@@ -36,7 +36,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
             <dependency>
                 <groupId>com.github.strikerx3</groupId>
                 <artifactId>jxinput</artifactId>
-                <version>e2b6835</version>
+                <version>612a85b</version>    <!-- JXInput 0.5 -->
             </dependency>
         </dependencies>
         ```
