@@ -52,6 +52,8 @@ public class XInputDevice {
 
     private static final XInputDevice[] DEVICES;
 
+    private static XInputStateReader stateReader = XInputStatePreProcessedReader.INSTANCE;
+
     static {
         XInputDevice[] devices;
         if (XInputNatives.isLoaded()) {
@@ -114,6 +116,23 @@ public class XInputDevice {
     }
 
     /**
+     * Defines whether to perform additional precalculations to the data. If enabled, in addition to filling in the raw
+     * values, the fields {@code lx}, {@code ly}, {@code rx}, {@code ry}, {@code lt} and {@code rt} in {@code XInputAxes}
+     * will be filled with non-zero {@code float} values ranging from -1 to 1 for the thumbsticks or 0 to 1 for the triggers,
+     * based on the raw values. If disabled, only the raw values will be filled. By default, the float values are calculated.
+     *
+     * @param preprocess whether to preprocess data into the {@code XInputAxes}'s {@code float} fields ({@code true}) or
+     * just use raw data ({@code false})
+     */
+    public static void setPreProcessData(final boolean preprocess) {
+        if (preprocess) {
+            stateReader = XInputStatePreProcessedReader.INSTANCE;
+        } else {
+            stateReader = XInputStateRawReader.INSTANCE;
+        }
+    }
+
+    /**
      * Adds an event listener that will react to changes in the input.
      *
      * @param listener the listener
@@ -143,74 +162,10 @@ public class XInputDevice {
         }
         setConnected(true);
 
-        // typedef struct _XINPUT_STATE
-        // {
-        //     DWORD                               dwPacketNumber;
-        //     XINPUT_GAMEPAD                      Gamepad;
-        // } XINPUT_STATE, *PXINPUT_STATE;
-
-        // typedef struct _XINPUT_GAMEPAD
-        // {
-        //     WORD                                wButtons;
-        //     BYTE                                bLeftTrigger;
-        //     BYTE                                bRightTrigger;
-        //     SHORT                               sThumbLX;
-        //     SHORT                               sThumbLY;
-        //     SHORT                               sThumbRX;
-        //     SHORT                               sThumbRY;
-        // } XINPUT_GAMEPAD, *PXINPUT_GAMEPAD;
-
-        /*int packetNumber = */buffer.getInt();// can be safely ignored
-        final short btns = buffer.getShort();
-        final byte leftTrigger = buffer.get();
-        final byte rightTrigger = buffer.get();
-        final short thumbLX = buffer.getShort();
-        final short thumbLY = buffer.getShort();
-        final short thumbRX = buffer.getShort();
-        final short thumbRY = buffer.getShort();
-        buffer.flip();
-
         lastComponents.copy(components);
 
-        final boolean up = (btns & XINPUT_GAMEPAD_DPAD_UP) != 0;
-        final boolean down = (btns & XINPUT_GAMEPAD_DPAD_DOWN) != 0;
-        final boolean left = (btns & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
-        final boolean right = (btns & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
-
         final XInputAxes axes = components.getAxes();
-        axes.lxRaw = thumbLX;
-        axes.lyRaw = thumbLY;
-        axes.rxRaw = thumbRX;
-        axes.ryRaw = thumbRY;
-        axes.ltRaw = leftTrigger & 0xff;
-        axes.rtRaw = rightTrigger & 0xff;
-
-        // TODO avoid these divisions if not needed, possibly by using a poller class
-        axes.lx = thumbLX / 32768f;
-        axes.ly = thumbLY / 32768f;
-        axes.rx = thumbRX / 32768f;
-        axes.ry = thumbRY / 32768f;
-        axes.lt = (leftTrigger & 0xff) / 255f;
-        axes.rt = (rightTrigger & 0xff) / 255f;
-        axes.dpad = XInputAxes.dpadFromButtons(up, down, left, right);
-
-        final XInputButtons buttons = components.getButtons();
-        buttons.a = (btns & XINPUT_GAMEPAD_A) != 0;
-        buttons.b = (btns & XINPUT_GAMEPAD_B) != 0;
-        buttons.x = (btns & XINPUT_GAMEPAD_X) != 0;
-        buttons.y = (btns & XINPUT_GAMEPAD_Y) != 0;
-        buttons.back = (btns & XINPUT_GAMEPAD_BACK) != 0;
-        buttons.start = (btns & XINPUT_GAMEPAD_START) != 0;
-        buttons.lShoulder = (btns & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
-        buttons.rShoulder = (btns & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
-        buttons.lThumb = (btns & XINPUT_GAMEPAD_LEFT_THUMB) != 0;
-        buttons.rThumb = (btns & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
-        buttons.guide = (btns & XINPUT_GAMEPAD_GUIDE_BUTTON) != 0;
-        buttons.unknown = (btns & XINPUT_GAMEPAD_UNKNOWN) != 0;
-        buttons.up = up;
-        buttons.down = down;
-        buttons.left = left;
-        buttons.right = right;
+        stateReader.read(buffer, components);
 
         processDelta();
         return true;
@@ -354,5 +309,98 @@ public class XInputDevice {
         final ByteBuffer buffer = ByteBuffer.allocateDirect(capacity);
         buffer.order(ByteOrder.nativeOrder());
         return buffer;
+    }
+
+    private static interface XInputStateReader {
+        void read(final ByteBuffer buffer, final XInputComponents components);
+    }
+
+    private static class XInputStateRawReader implements XInputStateReader {
+        public static final XInputStateRawReader INSTANCE = new XInputStateRawReader();
+
+        protected XInputStateRawReader() {}
+
+        @Override
+        public void read(final ByteBuffer buffer, final XInputComponents components) {
+            // typedef struct _XINPUT_STATE
+            // {
+            //     DWORD                               dwPacketNumber;
+            //     XINPUT_GAMEPAD                      Gamepad;
+            // } XINPUT_STATE, *PXINPUT_STATE;
+
+            // typedef struct _XINPUT_GAMEPAD
+            // {
+            //     WORD                                wButtons;
+            //     BYTE                                bLeftTrigger;
+            //     BYTE                                bRightTrigger;
+            //     SHORT                               sThumbLX;
+            //     SHORT                               sThumbLY;
+            //     SHORT                               sThumbRX;
+            //     SHORT                               sThumbRY;
+            // } XINPUT_GAMEPAD, *PXINPUT_GAMEPAD;
+
+            /*int packetNumber = */buffer.getInt();// can be safely ignored
+            final short btns = buffer.getShort();
+            final byte leftTrigger = buffer.get();
+            final byte rightTrigger = buffer.get();
+            final short thumbLX = buffer.getShort();
+            final short thumbLY = buffer.getShort();
+            final short thumbRX = buffer.getShort();
+            final short thumbRY = buffer.getShort();
+            buffer.flip();
+
+            final boolean up = (btns & XINPUT_GAMEPAD_DPAD_UP) != 0;
+            final boolean down = (btns & XINPUT_GAMEPAD_DPAD_DOWN) != 0;
+            final boolean left = (btns & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
+            final boolean right = (btns & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
+
+            final XInputAxes axes = components.getAxes();
+            axes.lxRaw = thumbLX;
+            axes.lyRaw = thumbLY;
+            axes.rxRaw = thumbRX;
+            axes.ryRaw = thumbRY;
+            axes.ltRaw = leftTrigger & 0xff;
+            axes.rtRaw = rightTrigger & 0xff;
+            axes.lx = axes.ly = 0f;
+            axes.rx = axes.ry = 0f;
+            axes.lt = axes.rt = 0f;
+            axes.dpad = XInputAxes.dpadFromButtons(up, down, left, right);
+
+            final XInputButtons buttons = components.getButtons();
+            buttons.a = (btns & XINPUT_GAMEPAD_A) != 0;
+            buttons.b = (btns & XINPUT_GAMEPAD_B) != 0;
+            buttons.x = (btns & XINPUT_GAMEPAD_X) != 0;
+            buttons.y = (btns & XINPUT_GAMEPAD_Y) != 0;
+            buttons.back = (btns & XINPUT_GAMEPAD_BACK) != 0;
+            buttons.start = (btns & XINPUT_GAMEPAD_START) != 0;
+            buttons.lShoulder = (btns & XINPUT_GAMEPAD_LEFT_SHOULDER) != 0;
+            buttons.rShoulder = (btns & XINPUT_GAMEPAD_RIGHT_SHOULDER) != 0;
+            buttons.lThumb = (btns & XINPUT_GAMEPAD_LEFT_THUMB) != 0;
+            buttons.rThumb = (btns & XINPUT_GAMEPAD_RIGHT_THUMB) != 0;
+            buttons.guide = (btns & XINPUT_GAMEPAD_GUIDE_BUTTON) != 0;
+            buttons.unknown = (btns & XINPUT_GAMEPAD_UNKNOWN) != 0;
+            buttons.up = up;
+            buttons.down = down;
+            buttons.left = left;
+            buttons.right = right;
+        }
+    }
+
+    private static class XInputStatePreProcessedReader extends XInputStateRawReader {
+        public static final XInputStatePreProcessedReader INSTANCE = new XInputStatePreProcessedReader();
+
+        protected XInputStatePreProcessedReader() {}
+
+        @Override
+        public void read(final ByteBuffer buffer, final XInputComponents components) {
+            super.read(buffer, components);
+            final XInputAxes axes = components.getAxes();
+            axes.lx = axes.lxRaw / 32768f;
+            axes.ly = axes.lyRaw / 32768f;
+            axes.rx = axes.rxRaw / 32768f;
+            axes.ry = axes.ryRaw / 32768f;
+            axes.lt = (axes.ltRaw & 0xff) / 255f;
+            axes.rt = (axes.rtRaw & 0xff) / 255f;
+        }
     }
 }
