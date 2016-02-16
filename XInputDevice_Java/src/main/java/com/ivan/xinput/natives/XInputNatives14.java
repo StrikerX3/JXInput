@@ -13,7 +13,7 @@ public final class XInputNatives14 {
     static {
         boolean loaded = false;
         try {
-            NativeLibraryHelper.load("lib/native", "XInputDevice14", XInputNatives.class.getClassLoader());
+            NativeLibraryHelper.load("lib/native", "XInputDevice14", XInputNatives14.class.getClassLoader());
             loaded = true;
         } catch (final Throwable e) {
             loadError = e;

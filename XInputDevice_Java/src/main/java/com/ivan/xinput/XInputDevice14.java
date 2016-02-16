@@ -4,7 +4,6 @@ import static com.ivan.xinput.natives.XInputConstants.ERROR_EMPTY;
 import static com.ivan.xinput.natives.XInputConstants.MAX_PLAYERS;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import com.ivan.xinput.enums.XInputBatteryDeviceType;
 import com.ivan.xinput.exceptions.XInputNotLoadedException;
@@ -39,14 +38,9 @@ public class XInputDevice14 extends XInputDevice {
     protected XInputDevice14(final int playerNum) {
         super(playerNum);
 
-        capsBuffer = ByteBuffer.allocateDirect(20); // sizeof(XINPUT_CAPABILITIES)
-        capsBuffer.order(ByteOrder.nativeOrder());
-
-        battBuffer = ByteBuffer.allocateDirect(2); // sizeof(XINPUT_BATTERY_INFORMATION)
-        battBuffer.order(ByteOrder.nativeOrder());
-
-        keysBuffer = ByteBuffer.allocateDirect(8); // sizeof(XINPUT_KEYSTROKE)
-        keysBuffer.order(ByteOrder.nativeOrder());
+        capsBuffer = newBuffer(20); // sizeof(XINPUT_CAPABILITIES)
+        battBuffer = newBuffer(2); // sizeof(XINPUT_BATTERY_INFORMATION)
+        keysBuffer = newBuffer(8); // sizeof(XINPUT_KEYSTROKE)
     }
 
     /**

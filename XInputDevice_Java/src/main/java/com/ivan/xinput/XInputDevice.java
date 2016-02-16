@@ -67,8 +67,7 @@ public class XInputDevice {
 
     protected XInputDevice(final int playerNum) {
         this.playerNum = playerNum;
-        buffer = ByteBuffer.allocateDirect(16);// sizeof(XINPUT_STATE)
-        buffer.order(ByteOrder.nativeOrder());
+        buffer = newBuffer(16);// sizeof(XINPUT_STATE)
 
         lastComponents = new XInputComponents();
         components = new XInputComponents();
@@ -335,5 +334,17 @@ public class XInputDevice {
         if (!XInputNatives.isLoaded()) {
             throw new XInputNotLoadedException("Native library failed to load", XInputNatives.getLoadError());
         }
+    }
+    
+    /**
+     * Creates a new direct ByteBuffer to be used for communicating with the native library.
+     * 
+     * @param capacity the buffer capacity
+     * @return a direct ByteBuffer with the specified capacity 
+     */
+    protected static ByteBuffer newBuffer(final int capacity) {
+        final ByteBuffer buffer = ByteBuffer.allocateDirect(capacity);
+        buffer.order(ByteOrder.nativeOrder());
+        return buffer;
     }
 }
