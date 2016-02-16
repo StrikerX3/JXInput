@@ -36,7 +36,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
             <dependency>
                 <groupId>com.github.strikerx3</groupId>
                 <artifactId>jxinput</artifactId>
-                <version>612a85b</version>    <!-- JXInput 0.5 -->
+                <version>a40568d</version>    <!-- JXInput 0.5 -->
             </dependency>
         </dependencies>
         ```
