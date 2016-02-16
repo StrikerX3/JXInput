@@ -178,6 +178,14 @@ public class XInputDevice {
         final boolean right = (btns & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
 
         final XInputAxes axes = components.getAxes();
+        axes.lxRaw = thumbLX;
+        axes.lyRaw = thumbLY;
+        axes.rxRaw = thumbRX;
+        axes.ryRaw = thumbRY;
+        axes.ltRaw = leftTrigger & 0xff;
+        axes.rtRaw = rightTrigger & 0xff;
+
+        // TODO avoid these divisions if not needed, possibly by using a poller class
         axes.lx = thumbLX / 32768f;
         axes.ly = thumbLY / 32768f;
         axes.rx = thumbRX / 32768f;
@@ -335,12 +343,12 @@ public class XInputDevice {
             throw new XInputNotLoadedException("Native library failed to load", XInputNatives.getLoadError());
         }
     }
-    
+
     /**
      * Creates a new direct ByteBuffer to be used for communicating with the native library.
-     * 
+     *
      * @param capacity the buffer capacity
-     * @return a direct ByteBuffer with the specified capacity 
+     * @return a direct ByteBuffer with the specified capacity
      */
     protected static ByteBuffer newBuffer(final int capacity) {
         final ByteBuffer buffer = ByteBuffer.allocateDirect(capacity);

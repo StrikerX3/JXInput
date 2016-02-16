@@ -1,6 +1,5 @@
 package com.ivan.xinput;
 
-
 import com.ivan.xinput.enums.XInputAxis;
 
 /**
@@ -9,6 +8,11 @@ import com.ivan.xinput.enums.XInputAxis;
  * @author Ivan "StrikerX3" Oliveira
  */
 public class XInputAxes {
+    public int lxRaw, lyRaw;
+    public int rxRaw, ryRaw;
+
+    public int ltRaw, rtRaw;
+
     public float lx, ly;
     public float rx, ry;
 
@@ -58,9 +62,41 @@ public class XInputAxes {
     }
 
     /**
+     * Gets the raw value from the specified axis.
+     *
+     * @param axis the axis
+     * @return the rawvalue of the axis
+     */
+    public int getRaw(final XInputAxis axis) {
+        switch (axis) {
+            case LEFT_THUMBSTICK_X:
+                return lxRaw;
+            case LEFT_THUMBSTICK_Y:
+                return lyRaw;
+            case RIGHT_THUMBSTICK_X:
+                return rxRaw;
+            case RIGHT_THUMBSTICK_Y:
+                return ryRaw;
+            case LEFT_TRIGGER:
+                return ltRaw;
+            case RIGHT_TRIGGER:
+                return rtRaw;
+            case DPAD:
+                return dpad;
+            default:
+                return 0;
+        }
+    }
+
+    /**
      * Resets the state of all axes.
      */
     protected void reset() {
+        lxRaw = lyRaw = 0;
+        rxRaw = ryRaw = 0;
+
+        ltRaw = rtRaw = 0;
+
         lx = ly = 0f;
         rx = ry = 0f;
 
@@ -75,6 +111,15 @@ public class XInputAxes {
      * @param axes the state to copy from
      */
     protected void copy(final XInputAxes axes) {
+        lxRaw = axes.lxRaw;
+        lyRaw = axes.lyRaw;
+
+        rxRaw = axes.rxRaw;
+        ryRaw = axes.ryRaw;
+
+        ltRaw = axes.ltRaw;
+        rtRaw = axes.rtRaw;
+
         lx = axes.lx;
         ly = axes.ly;
 
