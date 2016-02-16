@@ -45,7 +45,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
 * Imports:
     ``` java
     import com.ivan.xinput.XInputDevice; // Class for XInput 1.3. Legacy for Win7.
-    import com.ivan.xinput.XInputDevice14; // Classfor XInput 1.4.
+    import com.ivan.xinput.XInputDevice14; // Class for XInput 1.4. Includes 1.3 API.
     ```
 
 * To check if the desired version is available:
@@ -176,7 +176,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
 	device.setVibration(leftMotor, rightMotor);
     ```
     
-## XInput 1.4 specific (UNTESTED!)
+## XInput 1.4 specific
 * Enable or disable the XInput reporting state:
     ``` java
 	// use this when your application loses focus
