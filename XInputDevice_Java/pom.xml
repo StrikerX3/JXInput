@@ -7,7 +7,7 @@
 	<groupId>com.ivan</groupId>
 	<artifactId>xinput-device</artifactId>
 	<version>0.5</version>
-	<name>XInput Device Handler</name>
+	<name>XInput Binding for Java</name>
 	<packaging>jar</packaging>
 
 	<build>

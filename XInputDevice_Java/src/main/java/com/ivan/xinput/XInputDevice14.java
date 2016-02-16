@@ -22,6 +22,7 @@ public class XInputDevice14 extends XInputDevice {
     private final ByteBuffer keysBuffer; // Contains the XINPUT_KEYSTROKE struct
 
     private static final XInputDevice14[] DEVICES;
+
     static {
         XInputDevice14[] devices;
         if (XInputNatives14.isLoaded()) {
@@ -146,7 +147,7 @@ public class XInputDevice14 extends XInputDevice {
      * Retrieves the next keystroke from this device, or <code>null</code> if there are no more keystrokes or the device is
      * not connected.
      *
-     * @return the next keystroke, or null if the device is not connected
+     * @return the next keystroke, or null if the device is not connected or there was no keystroke
      */
     public XInputKeystroke getKeystroke() {
         final int ret = XInputNatives14.getKeystroke(playerNum, keysBuffer);

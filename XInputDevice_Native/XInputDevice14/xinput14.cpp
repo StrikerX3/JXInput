@@ -7,13 +7,13 @@
 
 #pragma comment(lib, "xinput.lib")
 
-JNIEXPORT void JNICALL Java_com_ivan_xinput_natives_XInputNatives_setEnabled
+JNIEXPORT void JNICALL Java_com_ivan_xinput_natives_XInputNatives14_setEnabled
   (JNIEnv *env, jclass cls, jboolean enabled)
 {
 	XInputEnable(enabled ? TRUE : FALSE);
 }
 
-JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getCapabilities
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives14_getCapabilities
   (JNIEnv *env, jclass cls, jint playerNum, jint flags, jobject byteBuffer)
 {
 	// the byte buffer must be allocatedDirect(20)'d in Java...
@@ -26,7 +26,7 @@ JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getCapabilitie
 	return XInputGetCapabilities(playerNum, flags, caps);
 }
 
-JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getBatteryInformation
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives14_getBatteryInformation
   (JNIEnv *env, jclass cls, jint playerNum, jint deviceType, jobject byteBuffer)
 {
 	// the byte buffer must be allocatedDirect(2)'d in Java...
@@ -39,7 +39,7 @@ JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getBatteryInfo
 	return XInputGetBatteryInformation(playerNum, deviceType, info);
 }
 
-JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getKeystroke
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives14_getKeystroke
 	(JNIEnv *env, jclass cls, jint playerNum, jobject byteBuffer)
 {
 	// the byte buffer must be allocatedDirect(8)'d in Java...
