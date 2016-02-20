@@ -226,4 +226,8 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
 	// use keystroke.getUnicode() to get the Unicode character
     ```
 
+### Debugging
+
+JXInput comes with both debug and release versions of the native libraries. By default, the release libraries are used. To load the debug libraries, set the system property `native.debug` to `true`.
+
 Released under the [MIT License](http://opensource.org/licenses/MIT).

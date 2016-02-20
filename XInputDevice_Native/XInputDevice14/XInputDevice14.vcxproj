@@ -28,6 +28,7 @@
     <ProjectGuid>{AB43901F-BF70-424B-AB24-EA4AE05B7204}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>XInputDevice14</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,10 +77,12 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Program Files (x86)\Java\jdk1.8.0_66\include\win32;C:\Program Files (x86)\Java\jdk1.8.0_66\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <TargetName>$(ProjectName)-d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Program Files\Java\jdk1.8.0_66\include\win32;C:\Program Files\Java\jdk1.8.0_66\include;$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)-d</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
