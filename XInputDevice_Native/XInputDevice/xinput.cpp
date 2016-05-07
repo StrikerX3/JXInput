@@ -9,8 +9,8 @@
 // taken from https://github.com/speps/XInputDotNet/blob/master/XInputInterface/GamePad.cpp
 namespace
 {
-	typedef DWORD(*XInputGetStatePointer)(DWORD dwUserIndex, XINPUT_STATE* pState);
-	typedef DWORD(*XInputSetStatePointer)(DWORD dwUserIndex, XINPUT_VIBRATION* pVibration);
+	typedef DWORD(__stdcall *XInputGetStatePointer)(DWORD dwUserIndex, XINPUT_STATE* pState);
+	typedef DWORD(__stdcall *XInputSetStatePointer)(DWORD dwUserIndex, XINPUT_VIBRATION* pVibration);
 
 	class XInputLoader
 	{
