@@ -161,29 +161,29 @@ public class XInputAxes {
         // center  DPAD_LEFT        DPAD_CENTER   DPAD_RIGHT
         // down    DPAD_DOWN_LEFT   DPAD_DOWN     DPAD_DOWN_RIGHT
 
-        if (up) {
-            if (left) {
+        if (u) {
+            if (l) {
                 return DPAD_UP_LEFT;
             }
-            if (right) {
+            if (r) {
                 return DPAD_UP_RIGHT;
             }
             return DPAD_UP;
         }
-        if (down) {
-            if (left) {
+        if (d) {
+            if (l) {
                 return DPAD_DOWN_LEFT;
             }
-            if (right) {
+            if (r) {
                 return DPAD_DOWN_RIGHT;
             }
             return DPAD_DOWN;
         }
         // vertical center
-        if (left) {
+        if (l) {
             return DPAD_LEFT;
         }
-        if (right) {
+        if (r) {
             return DPAD_RIGHT;
         }
         return DPAD_CENTER;
