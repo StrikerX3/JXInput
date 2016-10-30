@@ -395,10 +395,11 @@ public class XInputDevice {
         public void read(final ByteBuffer buffer, final XInputComponents components) {
             super.read(buffer, components);
             final XInputAxes axes = components.getAxes();
-            axes.lx = axes.lxRaw / 32768f;
-            axes.ly = axes.lyRaw / 32768f;
-            axes.rx = axes.rxRaw / 32768f;
-            axes.ry = axes.ryRaw / 32768f;
+            axes.lx = ((axes.lxRaw + 32768)/32767.5f)-1;
+            axes.ly = ((axes.lyRaw + 32768)/32767.5f)-1;
+            axes.rx = ((axes.rxRaw + 32768)/32767.5f)-1;
+            axes.ry = ((axes.ryRaw + 32768)/32767.5f)-1;
+
             axes.lt = (axes.ltRaw & 0xff) / 255f;
             axes.rt = (axes.rtRaw & 0xff) / 255f;
         }
