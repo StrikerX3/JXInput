@@ -10,7 +10,7 @@ Requirements:
 The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) are required to use JXInput. XInput 1.3 support comes out of the box in Windows 7. XInput 1.4 is only supported in Windows 8 or later.
 
 ### Prep:
-* Option 1: Host your own Maven Server.
+* Option 1: Install to your local Maven repository.
     * Install the project into your Maven repository (since it is not available in the Central Maven repository).
     * Include the Maven dependency into your project by adding the following to your `pom.xml`
 
@@ -18,11 +18,11 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>xinput-device</artifactId>
-            <version>0.6</version>
+            <version>0.7</version>
         </dependency>
         ```
 
-* Option 2: Don't Host your own Maven Server by using [JitPack](http://jitpack.io/).
+* Option 2: Use [JitPack](http://jitpack.io/).
     * Add the following to your `pom.xml`
         ```xml
         <repositories>
@@ -36,7 +36,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
             <dependency>
                 <groupId>com.github.strikerx3</groupId>
                 <artifactId>jxinput</artifactId>
-                <version>a40568d</version>    <!-- JXInput 0.5 -->
+                <version>1eb4087</version>    <!-- JXInput 0.7 -->
             </dependency>
         </dependencies>
         ```
@@ -59,6 +59,11 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
     if (XInputDevice14.isAvailable()) {
     	System.out.println("XInput 1.4 is available on this platform.");
     }
+    ```
+* To check which DLL version was loaded:
+    ```java
+    // get the DLL version
+    System.out.println("Native library version: " + XInputDevice.getLibraryVersion());
     ```
     
 * To retrieve devices:
@@ -88,9 +93,17 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
         // buttons and axes have public fields
         
         // retrieve button state
-        if (button.a) {
-            // button A is currently pressed
+        if (buttons.a) {
+            // the A button is currently pressed
         }
+	
+	// check if Guide button is supported
+	if (XInputDevice.isGuideButtonSupported()) {
+	    // use it
+	    if (buttons.guide) {
+	        // the Guide button is currently pressed
+	    }
+	}
         
         // retrieve axis state
         float acceleration = axes.rt;
@@ -108,7 +121,7 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
     }
     ```
 
-* Using deltas (changes in state):
+* Using deltas (changes in state between polls):
     ```java
     XInputDevice device = ...;
     
@@ -165,39 +178,40 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
 
 * Vibration
     ``` java
-	XInputDevice device = ...;
-
-	// vibration speeds from 0 to 65535
-	//   where 0 = no vibration
-	//   and 65535 = maximum vibration
-	int leftMotor = ...;
-	int rightMotor = ...;
+    XInputDevice device = ...;
     
-	device.setVibration(leftMotor, rightMotor);
+    // vibration speeds from 0 to 65535
+    //   where 0 = no vibration
+    //   and 65535 = maximum vibration
+    // values out of range throw IllegalArgumentException
+    int leftMotor = ...;
+    int rightMotor = ...;
+    
+    device.setVibration(leftMotor, rightMotor);
     ```
     
 ## XInput 1.4 specific
 * Enable or disable the XInput reporting state:
     ``` java
-	// use this when your application loses focus
-	XInputDevice14.setEnabled(false);
-	// - polling will return neutral data regardless of actual state (e.g. sticks at rest, buttons released)
-	// - vibration settings will be ignored
-	
-	// use this when your application regains focus
-	XInputDevice14.setEnabled(true);
-	// - polling will return the actual state of the controller
-	// - vibration settings will be applied
-	```
+    // use this when your application loses focus
+    XInputDevice14.setEnabled(false);
+    // - polling will return neutral data regardless of actual state (e.g. sticks at rest, buttons released)
+    // - vibration settings will be ignored
+    
+    // use this when your application regains focus
+    XInputDevice14.setEnabled(true);
+    // - polling will return the actual state of the controller
+    // - vibration settings will be applied
+    ```
 	
 * Retrieve battery information from a device:
     ``` java
-	XInputDevice14 device = ...;
-
-	// retrieves the gamepad battery data
+    XInputDevice14 device = ...;
+    
+    // retrieves the gamepad battery data
     XInputBatteryInformation gamepadBattInfo = device.getBatteryInformation(XInputBatteryDeviceType.GAMEPAD);
     System.out.println("Gamepad battery: " + gamepadBattInfo.getType() + ", " + gamepadBattInfo.getLevel());
-
+    
     // check battery level
     if (gamepadBattInfo.getLevel() == XInputBatteryLevel.LOW) {
         System.out.println("  Battery is low! Recharge or replace batteries.");
@@ -206,24 +220,24 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
     
 * Retrieve device capabilities:
     ``` java
-	XInputDevice14 device = ...;
-
+    XInputDevice14 device = ...;
+    
     XInputCapabilities caps = device.getCapabilities();
     System.out.println("Device type: " + caps.getType());
     System.out.println("Device subtype: " + caps.getSubType());
-
+    
     // caps.getSupportedButtons() returns a Set<XInputButton> with the supported buttons
     // caps.getResolutions() returns an object with the resolutions of all axes
     ```
     
 * Retrieve a keystroke:
     ``` java
-	XInputDevice14 device = ...;
-
-	XInputKeystroke keystroke = device.getKeystroke();
-	// use keystroke.isKeyDown(), .isKeyUp() and .isRepeat() to check the kind of keystroke
-	// use keystroke.getVirtualKey() to get the virtual key code (constants available in XInputVirtualKeyCodes)
-	// use keystroke.getUnicode() to get the Unicode character
+    XInputDevice14 device = ...;
+    
+    XInputKeystroke keystroke = device.getKeystroke();
+    // use keystroke.isKeyDown(), .isKeyUp() and .isRepeat() to check the kind of keystroke
+    // use keystroke.getVirtualKey() to get the virtual key code (constants available in XInputVirtualKeyCodes)
+    // use keystroke.getUnicode() to get the Unicode character
     ```
 
 ### Debugging
