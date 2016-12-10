@@ -51,8 +51,11 @@ public class XInputDevice {
     private final List<XInputDeviceListener> listeners;
 
     private static final XInputDevice[] DEVICES;
+    private static final XInputLibraryVersion LIBRARY_VERSION;
+    private static final boolean GUIDE_BUTTON_SUPPORTED;
 
     private static XInputStateReader stateReader = XInputStatePreProcessedReader.INSTANCE;
+
 
     static {
         XInputDevice[] devices;
@@ -65,6 +68,9 @@ public class XInputDevice {
             devices = null;
         }
         DEVICES = devices;
+
+        LIBRARY_VERSION = XInputLibraryVersion.values()[XInputNatives.getLoadedLibVersion()];
+        GUIDE_BUTTON_SUPPORTED = XInputNatives.isGuideButtonSupported();
     }
 
     protected XInputDevice(final int playerNum) {
@@ -87,6 +93,24 @@ public class XInputDevice {
      */
     public static boolean isAvailable() {
         return DEVICES != null;
+    }
+
+    /**
+     * Retrieves the loaded XInput library version.
+     *
+     * @return one of the values of {@link XInputLibraryVersion}
+     */
+    public static XInputLibraryVersion getLibraryVersion() {
+        return LIBRARY_VERSION;
+    }
+
+    /**
+     * Determines if polling the Guide button is supported.
+     *
+     * @return <code>true</code> if the Guide button state can be read, <code>false</code> otherwise.
+     */
+    public static boolean isGuideButtonSupported() {
+        return GUIDE_BUTTON_SUPPORTED;
     }
 
     /**
@@ -395,10 +419,10 @@ public class XInputDevice {
         public void read(final ByteBuffer buffer, final XInputComponents components) {
             super.read(buffer, components);
             final XInputAxes axes = components.getAxes();
-            axes.lx = ((axes.lxRaw + 32768)/32767.5f)-1;
-            axes.ly = ((axes.lyRaw + 32768)/32767.5f)-1;
-            axes.rx = ((axes.rxRaw + 32768)/32767.5f)-1;
-            axes.ry = ((axes.ryRaw + 32768)/32767.5f)-1;
+            axes.lx = (axes.lxRaw + 32768) / 32767.5f - 1;
+            axes.ly = (axes.lyRaw + 32768) / 32767.5f - 1;
+            axes.rx = (axes.rxRaw + 32768) / 32767.5f - 1;
+            axes.ry = (axes.ryRaw + 32768) / 32767.5f - 1;
 
             axes.lt = (axes.ltRaw & 0xff) / 255f;
             axes.rt = (axes.rtRaw & 0xff) / 255f;

@@ -9,6 +9,22 @@ extern "C" {
 #endif
 /*
  * Class:     com_ivan_xinput_natives_XInputNatives
+ * Method:    getLoadedLibVersion
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_com_ivan_xinput_natives_XInputNatives_getLoadedLibVersion
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_ivan_xinput_natives_XInputNatives
+ * Method:    isGuideButtonSupported
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_ivan_xinput_natives_XInputNatives_isGuideButtonSupported
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_ivan_xinput_natives_XInputNatives
  * Method:    pollDevice
  * Signature: (ILjava/nio/ByteBuffer;)I
  */

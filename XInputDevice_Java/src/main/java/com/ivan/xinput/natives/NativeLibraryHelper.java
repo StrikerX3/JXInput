@@ -44,7 +44,7 @@ import java.security.NoSuchAlgorithmException;
  * Files are extracted to the path specified by the system property {@code native.lib.path}. If the property is not
  * specified, libraries will be extracted to the {@code lib} folder under the working directory.
  */
-// TODO allow a custom string scheme
+// TODO allow a custom path scheme
 public class NativeLibraryHelper {
     /**
      * System architectures: x86 or x64.
@@ -158,11 +158,12 @@ public class NativeLibraryHelper {
             OPERATING_SYSTEM = OS.OTHER;
         }
 
-        LIB_DIR = new File(System.getProperty("native.lib.path", "lib"), ARCHITECTURE.toString());
+        final String nativeLibPath = System.getProperty("native.lib.path", System.getProperty("java.io.tmpdir") + File.separator + "nativelibs");
+        LIB_DIR = new File(nativeLibPath, ARCHITECTURE.toString());
         LIB_DIR.mkdirs();
 
         // add the tempDir to the java.library.path
-        final String pathSep = File.separator;
+        final String pathSep = File.pathSeparator;
         System.setProperty("java.library.path",
             System.getProperty("java.library.path") + pathSep + LIB_DIR.getAbsolutePath());
 
@@ -252,7 +253,7 @@ public class NativeLibraryHelper {
             md5out.write(digest.digest());
             return md5out.toString();
         } catch (final NoSuchAlgorithmException e) {
-            throw new IllegalStateException("MD5 algorithm is not available: " + e);
+            throw new IllegalStateException("MD5 algorithm is not available", e);
         } finally {
             in.close();
         }

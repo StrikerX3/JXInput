@@ -41,6 +41,10 @@ public final class XInputNatives {
         return loadError;
     }
 
+    public static native int getLoadedLibVersion();
+
+    public static native boolean isGuideButtonSupported();
+
     // https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetstate(v=vs.85).aspx
     public static native int pollDevice(int playerNum, ByteBuffer data);
 

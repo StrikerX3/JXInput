@@ -24,6 +24,7 @@ import com.ivan.xinput.enums.XInputButton;
 import com.ivan.xinput.enums.XInputDeviceSubType;
 import com.ivan.xinput.enums.XInputDeviceType;
 import com.ivan.xinput.natives.XInputConstants;
+import com.ivan.xinput.natives.XInputNatives;
 
 /**
  * Contains information about the device's capabilities.
@@ -101,6 +102,11 @@ public class XInputCapabilities {
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_DOWN, XInputButton.DPAD_DOWN);
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_LEFT, XInputButton.DPAD_LEFT);
         addSupportedButton(buttons, XINPUT_GAMEPAD_DPAD_RIGHT, XInputButton.DPAD_RIGHT);
+
+        // add Guide button support manually
+        if (XInputNatives.isGuideButtonSupported()) {
+            supportedButtons.add(XInputButton.GUIDE_BUTTON);
+        }
 
         resolutions = new XInputCapsResolutions(buffer);
     }
