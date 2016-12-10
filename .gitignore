@@ -13,11 +13,14 @@ target/
 # Visual Studio local files and databases
 *.opensdf
 *.sdf
+*.opendb
+*.db
 *.suo
 *.user
 
 # Visual Studio output folders
 Debug/
 Release/
+Win32/
 x64/
 ipch/
