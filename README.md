@@ -96,14 +96,14 @@ The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.mic
         if (buttons.a) {
             // the A button is currently pressed
         }
-	
-	// check if Guide button is supported
-	if (XInputDevice.isGuideButtonSupported()) {
-	    // use it
-	    if (buttons.guide) {
-	        // the Guide button is currently pressed
-	    }
-	}
+        
+        // check if Guide button is supported
+        if (XInputDevice.isGuideButtonSupported()) {
+            // use it
+            if (buttons.guide) {
+                // the Guide button is currently pressed
+            }
+        }
         
         // retrieve axis state
         float acceleration = axes.rt;
