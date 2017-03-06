@@ -12,6 +12,9 @@ import com.ivan.xinput.natives.XInputNatives14;
 
 /**
  * Provides extended functionality available on XInput 1.4.
+ * <p>
+ * As with {@code XInputDevice}, certain methods in this class are not thread-safe.
+ * It is not recommended to share an instance of {@code XInputDevice14} across multiple threads.
  *
  * @author Ivan "StrikerX3" Oliveira
  */
@@ -54,6 +57,8 @@ public class XInputDevice14 extends XInputDevice {
 
     /**
      * Returns an array containing all registered XInput devices.
+     * <p>
+     * The XInputDevice14 objects are not thread-safe.
      *
      * @return all XInput devices
      * @throws XInputNotLoadedException if the native library failed to load
@@ -65,6 +70,8 @@ public class XInputDevice14 extends XInputDevice {
 
     /**
      * Returns the XInput device for the specified player.
+     * <p>
+     * The returned object should not be shared among multiple threads.
      *
      * @param playerNum the player number
      * @return the XInput device for the specified player
@@ -92,6 +99,8 @@ public class XInputDevice14 extends XInputDevice {
 
     /**
      * Retrieves the capabilities of the device.
+     * <p>
+     * This method is not thread-safe.
      *
      * @return the device's capabilities, or <code>null</code> if the device is not connected
      * @throws IllegalStateException if there is an error trying to read the device state
@@ -102,6 +111,8 @@ public class XInputDevice14 extends XInputDevice {
 
     /**
      * Retrieves the capabilities of the gamepad.
+     * <p>
+     * This method is not thread-safe.
      *
      * @return the gamepad's capabilities, or <code>null</code> if the device is not connected
      * @throws IllegalStateException if there is an error trying to read the device state
@@ -122,6 +133,8 @@ public class XInputDevice14 extends XInputDevice {
 
     /**
      * Retrieves the device's battery information.
+     * <p>
+     * This method is not thread-safe.
      *
      * @param deviceType the type of device to obtain battery information from
      * @return an {@link XInputBatteryInformation} or {@code null} if the device is not connected
@@ -140,6 +153,8 @@ public class XInputDevice14 extends XInputDevice {
     /**
      * Retrieves the next keystroke from this device, or <code>null</code> if there are no more keystrokes or the device is
      * not connected.
+     * <p>
+     * This method is not thread-safe.
      *
      * @return the next keystroke, or null if the device is not connected or there was no keystroke
      */

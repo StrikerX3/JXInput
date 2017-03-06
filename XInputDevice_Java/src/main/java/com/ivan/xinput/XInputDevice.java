@@ -33,6 +33,9 @@ import com.ivan.xinput.natives.XInputNatives;
 /**
  * Represents all XInput devices registered in the system.
  * Use the {@link #getAllDevices()} or {@link #getDeviceFor(int)} methods to start using the devices.
+ * <p>
+ * Certain methods in this class are not thread-safe and are documented as such.
+ * It is not recommended to share an instance of {@code XInputDevice} across multiple threads.
  *
  * @author Ivan "StrikerX3" Oliveira
  * @see XInputComponents
@@ -45,7 +48,6 @@ public class XInputDevice {
     private final XInputComponents components;
     private final XInputComponentsDelta delta;
 
-    private boolean lastConnected;
     private boolean connected;
 
     private final List<XInputDeviceListener> listeners;
@@ -55,7 +57,6 @@ public class XInputDevice {
     private static final boolean GUIDE_BUTTON_SUPPORTED;
 
     private static XInputStateReader stateReader = XInputStatePreProcessedReader.INSTANCE;
-
 
     static {
         XInputDevice[] devices;
@@ -115,6 +116,8 @@ public class XInputDevice {
 
     /**
      * Returns an array containing all registered XInput devices.
+     * <p>
+     * The {@code XInputDevice} objects are not thread-safe.
      *
      * @return all XInput devices
      * @throws XInputNotLoadedException if the native library failed to load
@@ -125,7 +128,9 @@ public class XInputDevice {
     }
 
     /**
-     * Returns the XInput device for the specified player.
+     * Returns the XInput device for the specified player. An instance is created for each of the four players in a system.
+     * <p>
+     * The returned object should not be shared among multiple threads.
      *
      * @param playerNum the player number
      * @return the XInput device for the specified player
@@ -176,6 +181,8 @@ public class XInputDevice {
 
     /**
      * Reads input from the device and updates components.
+     * <p>
+     * This method is not thread-safe.
      *
      * @return <code>false</code> if the device is not connected
      * @throws IllegalStateException if there is an error trying to read the device state
@@ -188,7 +195,6 @@ public class XInputDevice {
 
         lastComponents.copy(components);
 
-        final XInputAxes axes = components.getAxes();
         stateReader.read(buffer, components);
 
         processDelta();
@@ -225,7 +231,7 @@ public class XInputDevice {
     }
 
     private void setConnected(final boolean state) {
-        lastConnected = connected;
+        final boolean lastConnected = connected;
         connected = state;
         for (final XInputDeviceListener listener : listeners) {
             if (connected && !lastConnected) {
@@ -251,6 +257,8 @@ public class XInputDevice {
 
     /**
      * Sets the vibration of the controller. Returns <code>false</code> if the device was not connected.
+     * <p>
+     * This method is not thread-safe.
      *
      * @param leftMotor the left motor speed, from 0 to 65535
      * @param rightMotor the right motor speed, from 0 to 65535
@@ -363,7 +371,7 @@ public class XInputDevice {
             //     SHORT                               sThumbRY;
             // } XINPUT_GAMEPAD, *PXINPUT_GAMEPAD;
 
-            /*int packetNumber = */buffer.getInt();// can be safely ignored
+            /*int packetNumber = */buffer.getInt(); // can be safely ignored
             final short btns = buffer.getShort();
             final byte leftTrigger = buffer.get();
             final byte rightTrigger = buffer.get();

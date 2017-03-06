@@ -19,7 +19,7 @@ Option 1: Install to your local Maven repository.
     <dependency>
         <groupId>com.ivan</groupId>
         <artifactId>xinput-device</artifactId>
-        <version>0.7</version>
+        <version>0.8</version>
     </dependency>
     ```
 
