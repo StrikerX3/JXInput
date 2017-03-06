@@ -39,7 +39,7 @@ Option 2: Use [JitPack](http://jitpack.io/).
         <dependency>
             <groupId>com.github.strikerx3</groupId>
             <artifactId>jxinput</artifactId>
-            <version>1eb4087</version>    <!-- JXInput 0.7 -->
+            <version>ca55984</version>    <!-- JXInput 0.8 -->
         </dependency>
     </dependencies>
     ```
