@@ -5,7 +5,7 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ivan</groupId>
-	<artifactId>xinput-device</artifactId>
+	<artifactId>jxinput</artifactId>
 	<version>0.8</version>
 	<name>XInput Binding for Java</name>
 	<packaging>jar</packaging>
