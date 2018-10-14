@@ -5,123 +5,137 @@ Java binding for [XInput](https://msdn.microsoft.com/en-us/library/windows/deskt
 
 Visual Studio 2015 solution contains the native code, which is already compiled and included in the Java project. It depends on XInput 1.3, which is used by Direct 9.0c games. XInput 1.4 is also supported through an extended API.
 
-Requirements:
+# Requirements
 
-The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) are required to use JXInput. XInput 1.3 support comes out of the box in Windows 7. XInput 1.4 is only supported in Windows 8 or later.
+The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) are required to use JXInput. XInput 1.3 support comes out of the box in Windows 7, Vista and XP SP1. XInput 1.4 is only supported in Windows 8 or later.
 
-### Preparation
-Option 1: Install to your local Maven repository.
+# Usage
 
-* Install the project into your Maven repository (since it is not available in the Central Maven repository).
-* Include the Maven dependency into your project by adding the following to your `pom.xml`:
+If you just want to use the library on your project, simply head to the [releases page](https://github.com/StrikerX3/JXInput/releases/), grab the latest version and include it in your project. If you prefer to use a Maven-compatible build system, use one of the options below:
+
+## Install to your local Maven repository
+
+1. Clone this project
+2. Install to your local Maven repository (since it is not available in the Central Maven repository):
+
+    ```
+    cd JXInput\XInputDevice_Java
+    mvn clean install
+    ```
+
+3. Include the Maven dependency into your project by adding the following to your `pom.xml`:
 
     ```xml
     <dependency>
         <groupId>com.ivan</groupId>
         <artifactId>xinput-device</artifactId>
-        <version>0.8</version>
+        <version>0.9</version>
     </dependency>
     ```
 
-Option 2: Use [JitPack](http://jitpack.io/).
+## Use [JitPack](http://jitpack.io/)
 
-* Add the following to your `pom.xml`:
+Add the following to your `pom.xml`:
 
-    ```xml
-    <repositories>
-       <repository>
-            <id>jitpack.io</id>           <!-- JitPack allows github repo to be used as a maven repo -->
-            <url>https://jitpack.io</url> <!-- For documentation: http://jitpack.io/ -->
-        </repository>
-    </repositories>
+```xml
+<repositories>
+   <repository>
+        <id>jitpack.io</id>           <!-- JitPack allows github repo to be used as a maven repo -->
+        <url>https://jitpack.io</url> <!-- For documentation: http://jitpack.io/ -->
+    </repository>
+</repositories>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.strikerx3</groupId>
-            <artifactId>jxinput</artifactId>
-            <version>ca55984</version>    <!-- JXInput 0.8 -->
-        </dependency>
-    </dependencies>
-    ```
-    
-### Usage
-Imports
-
-``` java
-import com.ivan.xinput.XInputDevice; // Class for XInput 1.3. Legacy for Win7.
-import com.ivan.xinput.XInputDevice14; // Class for XInput 1.4. Includes 1.3 API.
+<dependencies>
+    <dependency>
+        <groupId>com.github.strikerx3</groupId>
+        <artifactId>jxinput</artifactId>
+        <version>0.9</version>    <!-- Use any released version, commit hash or branch-SNAPSHOT here -->
+    </dependency>
+</dependencies>
 ```
+    
+# Code examples
 
-Check if the desired version is available
+The entry points of the library are the classes `com.ivan.xinput.XInputDevice` and `com.ivan.xinput.XInputDevice14`.
+
+`XInputDevice`contains all XInput 1.3 functionality and is compatible with all versions of Windows out of the box since XP SP1. `XInputDevice14` extends that class with features specific to XInput 1.4 and requires Windows 8 and later. Not all features are supported; most notably missing are the [audio](https://docs.microsoft.com/en-us/windows/desktop/api/xinput/nf-xinput-xinputgetaudiodeviceids) [functions](https://docs.microsoft.com/en-us/windows/desktop/api/XInput/nf-xinput-xinputgetdsoundaudiodeviceguids).
+
+In order to check if the desired XInput version is available at runtime, you can use the static method `isAvailable()` on those classes:
 
 ```java
-// check if XInput 1.3 is available
+// Check if XInput 1.3 is available
 if (XInputDevice.isAvailable()) {
-    System.out.println("XInput 1.3 is available on this platform.");
+    // XInput 1.3 is available on this platform
 }
 
-// check if XInput 1.4 is available
+// Check if XInput 1.4 is available
 if (XInputDevice14.isAvailable()) {
-    System.out.println("XInput 1.4 is available on this platform.");
+    // XInput 1.4 is available on this platform
 }
 ```
 
-Check which DLL version was loaded
+You may also be interested in checking which DLL version was loaded:
 
 ```java
-// get the DLL version
-System.out.println("Native library version: " + XInputDevice.getLibraryVersion());
+// Get the DLL version, which can be one of the following:
+// - XInputLibraryVersion.NONE: no XInput available
+// - XInputLibraryVersion.XINPUT_1_4: XInput 1.4 (Windows 8 and later)
+// - XInputLibraryVersion.XINPUT_1_3: XInput 1.3 (Windows XP SP1 and later)
+// - XInputLibraryVersion.XINPUT_9_1_0: XInput9 1.0 (Windows Vista only)
+XInputLibraryVersion libVersion = XInputDevice.getLibraryVersion();
 ```
+
+## Using `XInputDevice`: XInput 1.3
+
+Supported on Windows XP SP1, Vista, 7, 8, 8.1 and 10.
     
-Retrieve devices
+### Retrieve devices
 
 ``` java
-// retrieve all devices
+// Retrieve all devices
 XInputDevice[] devices = XInputDevice.getAllDevices();
 
-// retrieve the device for player 1
+// Retrieve the device for player 1
 XInputDevice device = XInputDevice.getDeviceFor(0); // or devices[0]
-
-// use XInputDevice14 if you want to use the XInput 1.4 functions
 ```
     
-Using the device ([XInputGetState](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetstate(v=vs.85).aspx))
+### Using the device ([XInputGetState](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetstate(v=vs.85).aspx))
 
 ```java
 XInputDevice device = ...;
 
-// first we need to poll data
-// will return false if the device is not connected
+// First we need to poll data.
+// poll() will return false if the device is not connected
 if (device.poll()) {
-    // retrieve the components
+    // Retrieve the components
     XInputComponents components = device.getComponents();
 
     XInputButtons buttons = components.getButtons();
     XInputAxes axes = components.getAxes();
 
-    // buttons and axes have public fields
+    // Buttons and axes have public fields (although this is not idiomatic Java)
 
-    // retrieve button state
+    // Retrieve button state
     if (buttons.a) {
-        // the A button is currently pressed
+        // The A button is currently pressed
     }
 
-    // check if Guide button is supported
+    // Check if Guide button is supported
     if (XInputDevice.isGuideButtonSupported()) {
-        // use it
+        // Use it
         if (buttons.guide) {
-            // the Guide button is currently pressed
+            // The Guide button is currently pressed
         }
     }
 
-    // retrieve axis state
+    // Retrieve axis state
     float acceleration = axes.rt;
     float brake = axes.lt;
 } else {
-    // controller is not connected; display a message
+    // Controller is not connected; display a message
 }
 
-// this is exactly the same as above
+// This is exactly the same as above
 device.poll();
 if (device.isConnected()) {
     // ...
@@ -130,135 +144,152 @@ if (device.isConnected()) {
 }
 ```
 
-Using deltas (changes in state between polls)
+### Using deltas (changes in state between polls)
 
 ```java
 XInputDevice device = ...;
 
 if (device.poll()) {
-    // retrieve the delta
+    // Retrieve the delta
     XInputComponentsDelta delta = device.getDelta();
 
     XInputButtonsDelta buttons = delta.getButtons();
     XInputAxesDelta axes = delta.getAxes();
 
-    // retrieve button state change
+    // Retrieve button state change
     if (buttons.isPressed(XInputButton.a)) {
-        // button A was just pressed
+        // Button A was just pressed
     } else if (buttons.isReleased(XInputButton.a)) {
-        // button A was just released
+        // Button A was just released
     }
 
-    // retrieve axis state change
-    // the class provides methods for each axis
-    // and a method for providing an XInputAxis
+    // Retrieve axis state change.
+    // The class provides methods for each axis and a method for providing an XInputAxis
     float accelerationDelta = axes.getRTDelta();
     float brakeDelta = axes.getDelta(XInputAxis.leftTrigger);
 } else {
-    // controller is not connected; display a message
+    // Controller is not connected; display a message
 }
 ```
 
-Using a listener
+### Using a listener
 
-``` java
+```java
 XInputDevice device = ...;
 
-// the SimpleXInputDeviceListener allows us to implement only the methods
-// we actually need
+// The SimpleXInputDeviceListener allows us to implement only the methods we actually need
 XInputDeviceListener listener = new SimpleXInputDeviceListener() {
     @Override
     public void connected() {
-        // resume the game
+        // Resume the game
     }
 
     @Override
     public void disconnected() {
-        // pause the game and display a message
+        // Pause the game and display a message
     }
 
     @Override
     public void buttonChanged(final XInputButton button, final boolean pressed) {
-        // the given button was just pressed (if pressed == true) or released (pressed == false)
+        // The given button was just pressed (if pressed == true) or released (pressed == false)
     }
 };
 
-// whenever the device is polled, listener events will be fired as long as there are changes
+// Whenever the device is polled, listener events will be fired as long as there are changes
 device.poll();
 ```
 
-Vibration ([XInputSetState](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputsetstate(v=vs.85).aspx))
+### Vibration ([XInputSetState](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputsetstate(v=vs.85).aspx))
 
-``` java
+```java
 XInputDevice device = ...;
 
-// vibration speeds from 0 to 65535
+// Vibration speeds from 0 to 65535
 //   where 0 = no vibration
 //   and 65535 = maximum vibration
-// values out of range throw IllegalArgumentException
+// Values out of range throw IllegalArgumentException
 int leftMotor = ...;
 int rightMotor = ...;
 
 device.setVibration(leftMotor, rightMotor);
 ```
     
-## XInput 1.4 specific
+## Using `XInputDevice14`: XInput 1.4
 
-Enable or disable the XInput reporting state ([XInputEnable](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputenable(v=vs.85).aspx))
+Supported on Windows 8, 8.1 and 10.
+
+All methods in `XInputDevice` are also available in `XInputDevice14`. For instance, you can poll a device by using:
 
 ``` java
-// use this when your application loses focus
-XInputDevice14.setEnabled(false);
-// - polling will return neutral data regardless of actual state (e.g. sticks at rest, buttons released)
-// - vibration settings will be ignored
+// Retrieve the device for player 1
+XInputDevice14 device = XInputDevice14.getDeviceFor(0); // or devices[0]
 
-// use this when your application regains focus
+// Poll the device
+if (device.poll()) {
+    ...
+}
+```
+
+### Enable or disable the XInput reporting state ([XInputEnable](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputenable(v=vs.85).aspx))
+
+``` java
+// Use this when your application loses focus
+XInputDevice14.setEnabled(false);
+// - Polling will return neutral data regardless of actual state (e.g. sticks at rest, buttons released)
+// - Vibration settings will be ignored
+
+// Use this when your application regains focus
 XInputDevice14.setEnabled(true);
-// - polling will return the actual state of the controller
-// - vibration settings will be applied
+// - Polling will return the actual state of the controller
+// - Vibration settings will be applied
 ```
 	
-Retrieve battery information from a device ([XInputGetBatteryInformation](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetbatteryinformation(v=vs.85).aspx))
+### Retrieve battery information from a device ([XInputGetBatteryInformation](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetbatteryinformation(v=vs.85).aspx))
 
-``` java
+```java
 XInputDevice14 device = ...;
 
-// retrieves the gamepad battery data
+// Retrieves the gamepad battery data
 XInputBatteryInformation gamepadBattInfo = device.getBatteryInformation(XInputBatteryDeviceType.GAMEPAD);
-System.out.println("Gamepad battery: " + gamepadBattInfo.getType() + ", " + gamepadBattInfo.getLevel());
+// gamepadBattInfo.getLevel() contains the battery charge level, one of the values of XInputBatteryLevel: EMPTY, LOW, MEDIUM or FULL.
+// gamepadBattInfo.getType() contains the battery type:
+// - XInputBatteryType.DISCONNECTED: the controller is disconnected
+// - XInputBatteryType.WIRED: wired controller
+// - XInputBatteryType.ALKALINE: using alkaline batteries
+// - XInputBatteryType.NIMH: using rechargeable nickel-metal hydride batteries
+// - XInputBatteryType.UNKNOWN: using an unknown type of battery
 
-// check battery level
+// Check battery level
 if (gamepadBattInfo.getLevel() == XInputBatteryLevel.LOW) {
-    System.out.println("  Battery is low! Recharge or replace batteries.");
+    // Battery is low! Might be useful to warn the user to recharge or replace batteries
 }
 ```
     
-Retrieve device capabilities ([XInputGetCapabilities](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_capabilities(v=vs.85).aspx))
+### Retrieve device capabilities ([XInputGetCapabilities](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinput_capabilities(v=vs.85).aspx))
 
-``` java
+```java
 XInputDevice14 device = ...;
 
 XInputCapabilities caps = device.getCapabilities();
-System.out.println("Device type: " + caps.getType());
-System.out.println("Device subtype: " + caps.getSubType());
-
+// caps.getType() returns the type of the device, which is always XInputDeviceType.GAMEPAD
+// caps.getSubType() returns the subtype, one of the [XInputDeviceSubType](https://github.com/StrikerX3/JXInput/blob/master/XInputDevice_Java/src/main/java/com/ivan/xinput/enums/XInputDeviceSubType.java) enum values
 // caps.getSupportedButtons() returns a Set<XInputButton> with the supported buttons
-// caps.getResolutions() returns an object with the resolutions of all axes
+// caps.getResolutions() returns an object with the resolutions of all axes as a bit mask
 ```
     
-Retrieve a keystroke ([XInputGetKeystroke](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetkeystroke(v=vs.85).aspx))
+### Retrieve a keystroke ([XInputGetKeystroke](https://msdn.microsoft.com/en-us/library/windows/desktop/microsoft.directx_sdk.reference.xinputgetkeystroke(v=vs.85).aspx))
 
-``` java
+```java
 XInputDevice14 device = ...;
 
 XInputKeystroke keystroke = device.getKeystroke();
-// use keystroke.isKeyDown(), .isKeyUp() and .isRepeat() to check the kind of keystroke
-// use keystroke.getVirtualKey() to get the virtual key code (constants available in XInputVirtualKeyCodes)
-// use keystroke.getUnicode() to get the Unicode character
+// Use keystroke.isKeyDown(), .isKeyUp() and .isRepeat() to check the kind of keystroke
+// Use keystroke.getVirtualKey() to get the virtual key code (constants available in XInputVirtualKeyCodes)
+// Use keystroke.getUnicode() to get the Unicode character
 ```
 
-### Debugging
+# Debugging
 
-JXInput comes with both debug and release versions of the native libraries. By default, the release libraries are used. To load the debug libraries, set the system property `native.debug` to `true`.
+JXInput comes with both debug and release versions of the native libraries. By default, the release libraries are used. To load the debug libraries, set the system property `native.debug` to `true` as a JVM argument: `-Dnative.debug=true`.
 
 Released under the [MIT License](http://opensource.org/licenses/MIT).
