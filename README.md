@@ -272,7 +272,7 @@ XInputDevice14 device = ...;
 
 XInputCapabilities caps = device.getCapabilities();
 // caps.getType() returns the type of the device, which is always XInputDeviceType.GAMEPAD
-// caps.getSubType() returns the subtype, one of the [XInputDeviceSubType](https://github.com/StrikerX3/JXInput/blob/master/XInputDevice_Java/src/main/java/com/ivan/xinput/enums/XInputDeviceSubType.java) enum values
+// caps.getSubType() returns the subtype, one of the XInputDeviceSubType enum values
 // caps.getSupportedButtons() returns a Set<XInputButton> with the supported buttons
 // caps.getResolutions() returns an object with the resolutions of all axes as a bit mask
 ```
