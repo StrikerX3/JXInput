@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
  * Helper class to facilitate loading native libraries that are included in the .jar file.
  * Libraries are expected to be within a folder in the classpath and their naming should be as follows:
  * <pre>
- * &lt;library-path&gt;/&lt;os&gt;-&lt;arch&gt;/&lt;lib-prefix&gt;&lt;lib-name&gt;[&lt;debug-suffix&gt;].&ltext&gt;
+ * &lt;library-path&gt;/&lt;os&gt;-&lt;arch&gt;/&lt;lib-prefix&gt;&lt;lib-name&gt;[&lt;debug-suffix&gt;].&lt;ext&gt;
  * </pre>
  * where:
  * <ul>
