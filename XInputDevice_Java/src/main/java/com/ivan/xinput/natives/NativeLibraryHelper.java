@@ -162,19 +162,6 @@ public class NativeLibraryHelper {
         final String nativeLibPath = System.getProperty("native.lib.path", System.getProperty("java.io.tmpdir") + File.separator + "nativelibs");
         LIB_DIR = new File(nativeLibPath, ARCHITECTURE.toString());
         LIB_DIR.mkdirs();
-
-        // add the tempDir to the java.library.path
-        final String pathSep = File.pathSeparator;
-        System.setProperty("java.library.path",
-            System.getProperty("java.library.path") + pathSep + LIB_DIR.getAbsolutePath());
-
-        // hack to force the class loader to reload the java.library.path paths
-        Field sysPathsField;
-        try {
-            sysPathsField = ClassLoader.class.getDeclaredField("sys_paths");
-            sysPathsField.setAccessible(true);
-            sysPathsField.set(null, null);
-        } catch (final Throwable e) {}
     }
 
     private NativeLibraryHelper() {}
