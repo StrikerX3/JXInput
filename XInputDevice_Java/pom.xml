@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.ivan</groupId>
 	<artifactId>jxinput</artifactId>
-	<version>0.8</version>
+	<version>0.9</version>
 	<name>XInput Binding for Java</name>
 	<packaging>jar</packaging>
 
