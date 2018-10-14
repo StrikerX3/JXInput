@@ -44,19 +44,20 @@ import java.security.NoSuchAlgorithmException;
  * Files are extracted to the path specified by the system property {@code native.lib.path}. If the property is not
  * specified, libraries will be extracted to the {@code lib} folder under the working directory.
  */
-// TODO allow a custom path scheme
+// TODO: allow a custom path scheme
+// FIXME: this will not work if a library depends on other libraries; need to extract the entire folder first
 public class NativeLibraryHelper {
     /**
      * System architectures: x86 or x64.
      */
-    private static enum SystemArch {
+    private enum SystemArch {
         x86, x64;
     }
 
     /**
      * Operating systems: Windows, Linux, UNIX-like, Mac OS or Other.
      */
-    private static enum OS {
+    private enum OS {
         WINDOWS("win", "", ".dll"), LINUX("linux", "lib", ".so"), UNIX_LIKE("unix", "lib", ".so"), MAC_OS("mac", "lib", ".dylib"), OTHER("other", "", "");
 
         /**
@@ -77,7 +78,7 @@ public class NativeLibraryHelper {
          */
         private final String libExt;
 
-        private OS(final String name, final String libPrefix, final String libExt) {
+        OS(final String name, final String libPrefix, final String libExt) {
             this.name = name;
             this.libPrefix = libPrefix;
             this.libExt = libExt;
