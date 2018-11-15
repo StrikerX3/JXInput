@@ -3,11 +3,15 @@ JXInput
 
 Java binding for [XInput](https://msdn.microsoft.com/en-us/library/windows/desktop/ee417001(v=vs.85).aspx).
 
-Visual Studio 2015 solution contains the native code, which is already compiled and included in the Java project. It depends on XInput 1.3, which is used by Direct 9.0c games. XInput 1.4 is also supported through an extended API.
+Visual Studio 2017 solution contains the native code, which is already compiled and included in the Java project. It depends on XInput 1.3, which is used by Direct 9.0c games. XInput 1.4 is also supported through an extended API.
 
 # Requirements
 
-The [Visual C++ Redistributable Packages for Visual Studio 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145) are required to use JXInput. XInput 1.3 support comes out of the box in Windows 7, Vista and XP SP1. XInput 1.4 is only supported in Windows 8 or later.
+The [Visual C++ Redistributable Packages for Visual Studio 2017](https://support.microsoft.com/en-gb/help/2977003/the-latest-supported-visual-c-downloads) are required to use JXInput:
+- [vc_redist.x86.exe](https://aka.ms/vs/15/release/vc_redist.x86.exe) (for 32-bit applications)
+- [vc_redist.x64.exe](https://aka.ms/vs/15/release/vc_redist.x64.exe) (for 64-bit applications)
+
+XInput 1.3 support comes out of the box in Windows 7, Vista and XP SP1. XInput 1.4 is only supported in Windows 8 or later.
 
 # Usage
 
@@ -16,20 +20,14 @@ If you just want to use the library on your project, simply head to the [release
 ## Install to your local Maven repository
 
 1. Clone this project
-2. Install to your local Maven repository (since it is not available in the Central Maven repository):
-
-    ```
-    cd JXInput\XInputDevice_Java
-    mvn clean install
-    ```
-
+2. Install to your local Maven repository (since it is not available in the Central Maven repository) by running `mvn clean install`.
 3. Include the Maven dependency into your project by adding the following to your `pom.xml`:
 
     ```xml
     <dependency>
-        <groupId>com.ivan</groupId>
-        <artifactId>xinput-device</artifactId>
-        <version>0.9</version>
+        <groupId>com.github.strikerx3</groupId>
+        <artifactId>jxinput</artifactId>
+        <version>1.0.0</version>
     </dependency>
     ```
 
@@ -49,14 +47,14 @@ Add the following to your `pom.xml`:
     <dependency>
         <groupId>com.github.strikerx3</groupId>
         <artifactId>jxinput</artifactId>
-        <version>0.9</version>    <!-- Use any released version, commit hash or branch-SNAPSHOT here -->
+        <version>1.0</version>    <!-- Use any released version, commit hash or branch-SNAPSHOT here -->
     </dependency>
 </dependencies>
 ```
     
 # Code examples
 
-The entry points of the library are the classes `com.ivan.xinput.XInputDevice` and `com.ivan.xinput.XInputDevice14`.
+The entry points of the library are the classes `com.github.strikerx3.jxinput.XInputDevice` and `com.github.strikerx3.jxinput.XInputDevice14`.
 
 `XInputDevice`contains all XInput 1.3 functionality and is compatible with all versions of Windows out of the box since XP SP1. `XInputDevice14` extends that class with features specific to XInput 1.4 and requires Windows 8 and later. Not all features are supported; most notably missing are the [audio](https://docs.microsoft.com/en-us/windows/desktop/api/xinput/nf-xinput-xinputgetaudiodeviceids) [functions](https://docs.microsoft.com/en-us/windows/desktop/api/XInput/nf-xinput-xinputgetdsoundaudiodeviceguids).
 
