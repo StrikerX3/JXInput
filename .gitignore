@@ -3,24 +3,18 @@
 .classpath
 .project
 
-# SVN metadata
-.svn
+# IntelliJ project data
+.idea/
 
 # Maven binaries
-bin/
 target/
 
-# Visual Studio local files and databases
-*.opensdf
-*.sdf
-*.opendb
-*.db
-*.suo
+# Visual Studio 2017 local files and databases
 *.user
+.vs/
 
 # Visual Studio output folders
 Debug/
 Release/
 Win32/
 x64/
-ipch/
