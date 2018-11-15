@@ -15,7 +15,7 @@ XInput 1.3 support comes out of the box in Windows 7, Vista and XP SP1. XInput 1
 
 # Usage
 
-If you just want to use the library on your project, simply head to the [releases page](https://github.com/StrikerX3/JXInput/releases/), grab the latest version and include it in your project. If you prefer to use a Maven-compatible build system, use one of the options below:
+If you just want to use the library on your project, simply head to the [releases page](https://github.com/StrikerX3/JXInput/releases/), grab the [latest version](https://github.com/StrikerX3/JXInput/releases/latest) and include it in your project. If you prefer to use a Maven-compatible build system, use one of the options below:
 
 ## Install to your local Maven repository
 
