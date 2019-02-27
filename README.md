@@ -47,7 +47,7 @@ Add the following to your `pom.xml`:
     <dependency>
         <groupId>com.github.strikerx3</groupId>
         <artifactId>jxinput</artifactId>
-        <version>1.0</version>    <!-- Use any released version, commit hash or branch-SNAPSHOT here -->
+        <version>1.0.0</version>    <!-- Use any released version, commit hash or branch-SNAPSHOT here -->
     </dependency>
 </dependencies>
 ```
